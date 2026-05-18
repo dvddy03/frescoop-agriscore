@@ -11,7 +11,7 @@ import { generateLocalAnswer } from './chatbot-fallback.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(__dirname, '..');
-const dataDir = path.join(__dirname, 'data');
+const dataDir = process.env.FRESCOOP_DATA_DIR || path.join(__dirname, 'data');
 const dbPath = path.join(dataDir, 'store.json');
 const distDir = path.join(rootDir, 'dist');
 const envPath = path.join(rootDir, '.env');
@@ -129,7 +129,7 @@ if (mongoUri) {
     const client = new MongoClient(mongoUri);
     await client.connect();
     mongoDb = client.db(process.env.MONGODB_DB || 'frescoop');
-    console.log('[MongoDB] Connecté à Atlas');
+    console.log('[MongoDB] Connecté à Atlas — les données persistent entre les déploiements');
   } catch (err) {
     console.error('[MongoDB] Connexion echouee:', err.message);
     if (requireMongo) {
@@ -137,7 +137,14 @@ if (mongoUri) {
     }
     console.error('[MongoDB] Connexion échouée, fallback sur store.json:', err.message);
   }
+} else {
+  console.warn('[DB] ⚠ MONGODB_URI non configuré — les données sont stockées en fichier local.');
+  console.warn('[DB] ⚠ Sur Railway/Render, les données seront PERDUES à chaque redéploiement.');
+  console.warn('[DB] ⚠ Configurez MONGODB_URI pour persister les comptes utilisateurs.');
 }
+
+// In-memory cache for resilience when filesystem is ephemeral
+let memoryStoreCache = null;
 
 // ============================================================================
 // CLOUDINARY
@@ -1754,18 +1761,30 @@ async function readStore() {
     const { _id, ...data } = doc;
     return normalizeStore(data);
   }
-  const raw = await readFile(dbPath, 'utf8');
-  return normalizeStore(JSON.parse(raw || '{}'));
+  try {
+    const raw = await readFile(dbPath, 'utf8');
+    const parsed = normalizeStore(JSON.parse(raw || '{}'));
+    memoryStoreCache = parsed;
+    return parsed;
+  } catch {
+    if (memoryStoreCache) return memoryStoreCache;
+    return normalizeStore({});
+  }
 }
 
 async function writeStore(data) {
+  memoryStoreCache = data;
   if (mongoDb) {
     await mongoDb.collection('store').replaceOne({ _id: 'main' }, { _id: 'main', ...data }, { upsert: true });
     return;
   }
-  const tmpPath = dbPath + '.tmp.' + Date.now();
-  await writeFile(tmpPath, JSON.stringify(data, null, 2), 'utf8');
-  await rename(tmpPath, dbPath);
+  try {
+    const tmpPath = dbPath + '.tmp.' + Date.now();
+    await writeFile(tmpPath, JSON.stringify(data, null, 2), 'utf8');
+    await rename(tmpPath, dbPath);
+  } catch (err) {
+    console.error('[Store] Erreur écriture fichier (données gardées en mémoire):', err.message);
+  }
 }
 
 function normalizeStore(value) {
