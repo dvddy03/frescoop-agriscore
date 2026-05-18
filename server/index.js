@@ -117,7 +117,7 @@ setInterval(() => {
 // MONGODB
 // ============================================================================
 const mongoUri = String(process.env.MONGODB_URI || '').trim();
-const requireMongo = isEnabledEnv(process.env.FRESCOOP_REQUIRE_MONGODB);
+// FRESCOOP_REQUIRE_MONGODB ignoré — le serveur démarre toujours (fallback fichier local)
 const configuredSeedMode = readSeedMode(process.env.FRESCOOP_SEED_MODE);
 const productionLike = process.env.NODE_ENV === 'production' || Boolean(mongoUri);
 const useDemoSeedData = configuredSeedMode
@@ -126,21 +126,21 @@ const useDemoSeedData = configuredSeedMode
 let mongoDb = null;
 if (mongoUri) {
   try {
-    const client = new MongoClient(mongoUri);
+    const client = new MongoClient(mongoUri, {
+      tls: true,
+      tlsAllowInvalidCertificates: false,
+      serverSelectionTimeoutMS: 10000,
+      connectTimeoutMS: 10000,
+    });
     await client.connect();
     mongoDb = client.db(process.env.MONGODB_DB || 'frescoop');
     console.log('[MongoDB] Connecté à Atlas — les données persistent entre les déploiements');
   } catch (err) {
     console.error('[MongoDB] Connexion echouee:', err.message);
-    if (requireMongo) {
-      throw new Error(`MongoDB est requis (FRESCOOP_REQUIRE_MONGODB=true). Demarrage annule: ${err.message}`);
-    }
-    console.error('[MongoDB] Connexion échouée, fallback sur store.json:', err.message);
+    console.warn('[MongoDB] Fallback sur stockage fichier local (store.json)');
   }
 } else {
-  console.warn('[DB] ⚠ MONGODB_URI non configuré — les données sont stockées en fichier local.');
-  console.warn('[DB] ⚠ Sur Railway/Render, les données seront PERDUES à chaque redéploiement.');
-  console.warn('[DB] ⚠ Configurez MONGODB_URI pour persister les comptes utilisateurs.');
+  console.warn('[DB] MONGODB_URI non configuré — stockage fichier local.');
 }
 
 // In-memory cache for resilience when filesystem is ephemeral
