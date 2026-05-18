@@ -783,7 +783,7 @@ function PublicSitePage({ navigate, path }) {
           <h2>Les agriculteurs sont invisibles pour le système financier.</h2>
           <p className="public-subtitle">Pas parce qu'ils ne sont pas fiables — parce qu'ils n'ont aucune preuve exploitable de leur activité.</p>
         </div>
-        <div className="public-problème-grid">
+        <div className="public-probleme-grid">
           <article>
             <strong>80%</strong>
             <span>sans accès au crédit</span>
@@ -837,7 +837,7 @@ function PublicSitePage({ navigate, path }) {
           <span className="eyebrow">Impact mesurable</span>
           <h2>Des résultats concrets pour chaque acteur.</h2>
         </div>
-        <div className="public-problème-grid">
+        <div className="public-probleme-grid">
           <article>
             <strong>65%</strong>
             <span>deviennent bancables en 3 mois</span>
