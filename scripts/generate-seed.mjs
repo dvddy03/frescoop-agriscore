@@ -24,7 +24,7 @@ const data = {
     name,
     email: `demo${i+1}@frescoop.sn`,
     phone: `+221 77 ${100+i} 00 00`,
-    role: i < 35 ? 'agriculteur' : i < 40 ? 'client' : i < 45 ? 'acheteurB2B' : 'transporteur',
+    role: i < 35 ? 'agriculteur' : i < 40 ? 'client' : i < 45 ? 'acheteurB2B' : 'agentTerrain',
     status: 'Actif',
     organization: coops[i % 5],
     region: regions[i % 5],
