@@ -372,7 +372,7 @@ async function handleAuth(request, response) {
   if (endpoint === 'register' && request.method === 'POST') {
     const body = await readBody(request);
     const data = JSON.parse(body || '{}');
-    const { name, email, password, role, phone, organization, region } = data;
+    const { name, email, password, role, phone, organization, region, gender } = data;
 
     if (!name || !email || !password) {
       sendJson(response, 400, { error: 'Nom, email et mot de passe requis' });
@@ -430,6 +430,7 @@ async function handleAuth(request, response) {
         status: (role || 'agriculteur') === 'client' ? 'Actif' : 'En attente',
         organization: String(organization || '').trim().slice(0, 100),
         region: String(region || '').trim().slice(0, 100),
+        gender: gender === 'F' || gender === 'M' ? gender : '',
         bio: '',
         passwordHash: hash,
         gpsLat,

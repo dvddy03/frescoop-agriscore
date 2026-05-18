@@ -1291,6 +1291,7 @@ function LoginPage({ actions, notify, onLogin, store }) {
     role: 'agriculteur',
     organization: '',
     region: '',
+    gender: '',
   });
 
   async function login(event) {
@@ -1341,6 +1342,7 @@ function LoginPage({ actions, notify, onLogin, store }) {
           phone: registerForm.phone || '',
           organization: registerForm.organization || '',
           region: registerForm.region || '',
+          gender: registerForm.gender || '',
           agentProfile: registerForm.role === 'agentTerrain' ? (registerForm.agentProfile || '') : '',
         }),
       });
@@ -1398,6 +1400,13 @@ function LoginPage({ actions, notify, onLogin, store }) {
             <Field label="Téléphone"><input value={registerForm.phone} onChange={(event) => updateForm(setRegisterForm, 'phone', event.target.value)} /></Field>
             <Field label="Organisation"><input value={registerForm.organization} onChange={(event) => updateForm(setRegisterForm, 'organization', event.target.value)} /></Field>
             <Field label="Région"><input value={registerForm.region} onChange={(event) => updateForm(setRegisterForm, 'region', event.target.value)} /></Field>
+            <Field label="Genre">
+              <select value={registerForm.gender} onChange={(event) => updateForm(setRegisterForm, 'gender', event.target.value)}>
+                <option value="">— Non précisé</option>
+                <option value="F">Femme</option>
+                <option value="M">Homme</option>
+              </select>
+            </Field>
             <Field label="Mot de passe" required><PasswordInput value={registerForm.password} onChange={(event) => updateForm(setRegisterForm, 'password', event.target.value)} /></Field>
           </div>
           <Button type="submit"><UserCheck size={18} /> Créer mon espace</Button>
@@ -5358,7 +5367,7 @@ function computeUemoaImpact(store) {
   const lossesAvertedPercent = lots.length || paidOrders.length ? Math.min(32, 12 + Math.round((lots.length + paidOrders.length) * 0.8)) : 0;
   const co2SavedKg = Math.round(tracedKg * 0.22);
   const producers = users.filter((user) => user.role === 'agriculteur');
-  const womenProducers = producers.filter((user) => user.gender === 'F' || /(^|\s)(fatou|aissatou|aïssatou|aminata|awa|khady|marieme|mariéme|mariame|mame|ndeye|fama|ndèye|fatoumata|diarra|binta|astou|bintou|soda|coumba|rokhaya|rokhia|aida|aïda|yacine|khadija|khadidja|penda|dior|oumy|mareme|marème)/i.test(String(user.name || ''))).length;
+  const womenProducers = producers.filter((user) => user.gender === 'F').length;
   const coopérativeCount = (store.coopératives || []).length;
   const paydunyaTxCount = paymentRecords.filter((record) => record.paydunyaToken || /paydunya/i.test(record.partner || '')).length;
 
@@ -5965,6 +5974,7 @@ function AccountPage({ actions, currentUser, notify, store }) {
     phone: currentUser.phone || '',
     organization: currentUser.organization || '',
     region: currentUser.region || '',
+    gender: currentUser.gender || '',
     bio: currentUser.bio || '',
   });
   const [pwForm, setPwForm] = useState({ current: '', next: '', confirm: '' });
@@ -6090,6 +6100,13 @@ function AccountPage({ actions, currentUser, notify, store }) {
         <Field label="Téléphone"><input value={form.phone} onChange={(event) => updateForm(setForm, 'phone', event.target.value)} /></Field>
         <Field label="Organisation"><input value={form.organization} onChange={(event) => updateForm(setForm, 'organization', event.target.value)} /></Field>
         <Field label="Région"><input value={form.region} onChange={(event) => updateForm(setForm, 'region', event.target.value)} /></Field>
+        <Field label="Genre">
+          <select value={form.gender} onChange={(event) => updateForm(setForm, 'gender', event.target.value)}>
+            <option value="">— Non précisé</option>
+            <option value="F">Femme</option>
+            <option value="M">Homme</option>
+          </select>
+        </Field>
         <Field label="Présentation"><textarea rows="4" value={form.bio} onChange={(event) => updateForm(setForm, 'bio', event.target.value)} /></Field>
         <Button type="submit"><Save size={18} /> Enregistrer</Button>
       </form>
@@ -8451,6 +8468,7 @@ function buildRichUemoaDemo(current) {
       organization: pick(COOPS, i * 3),
       region: pick(REGIONS, i),
       bio: `Productrice membre de ${pick(COOPS, i * 3)}.`,
+      gender: 'F',
       passwordHash: demoHash,
     });
   }
