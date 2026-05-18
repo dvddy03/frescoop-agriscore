@@ -2028,36 +2028,36 @@ function SellerHomePage({ currentUser, navigate, store }) {
               {orders.slice(0, 5).map((order) => <OrderLine key={order.id} order={order} store={store} withProgress />)}
             </div>
           ) : (
-            <EmptyState icon={ShoppingCart} title="Aucune commande" body="Chaque commande confirmee augmente votre score de bancabilité." />
+            <EmptyState icon={ShoppingCart} title="Aucune commande" body="Chaque commande confirmée augmente votre score de bancabilité." />
           )}
         </section>
 
         <section className="panel">
-          <PanelTitle icon={Landmark} title="Progression vers le credit" />
+          <PanelTitle icon={Landmark} title="Progression vers le crédit" />
           <div className="finance-score-card">
             <div className="score-ring"><strong>{bancabiliteScore}</strong><span>/100</span></div>
             <div>
               <strong>Dossier bancaire FresCoop</strong>
-              <p>{bancabiliteScore >= 75 ? "Votre profil est eligible à une demande de credit. Exportez votre dossier." : "Continuez à vendre et soumettre des preuves pour devenir bancable."}</p>
+              <p>{bancabiliteScore >= 75 ? "Votre profil est éligible. Exportez votre dossier." : "Continuez à vendre pour devenir bancable."}</p>
               <div className="button-row">
                 <Button variant="secondary" onClick={() => navigate('/bancabilite')}><FileCheck2 size={16} /> Voir mon dossier</Button>
-                {bancabiliteScore >= 60 && <Button onClick={() => navigate('/bancabilite')}><Landmark size={16} /> Demander un credit</Button>}
+                {bancabiliteScore >= 60 && <Button onClick={() => navigate('/bancabilite')}><Landmark size={16} /> Demander un crédit</Button>}
               </div>
             </div>
           </div>
-          <NoticeCard icon={ShieldCheck} title="Comment ça marche" body="Vos ventes, livraisons et preuves sont converties en score de 0 à 100. À 75+, vous pouvez exporter un dossier bancaire vérifiable par QR code." />
-          <div className="permissions-progress">
-            <strong>Permissions débloquées selon votre score :</strong>
-            <ul>
-              <li className={bancabiliteScore >= 0 ? 'unlocked' : 'locked'}><CheckCircle2 size={14} /> Publier des produits et recevoir des commandes</li>
-              <li className={bancabiliteScore >= 20 ? 'unlocked' : 'locked'}>{bancabiliteScore >= 20 ? <CheckCircle2 size={14} /> : <CircleAlert size={14} />} Soumettre des preuves économiques</li>
-              <li className={bancabiliteScore >= 40 ? 'unlocked' : 'locked'}>{bancabiliteScore >= 40 ? <CheckCircle2 size={14} /> : <CircleAlert size={14} />} Demander un micro-crédit</li>
-              <li className={bancabiliteScore >= 60 ? 'unlocked' : 'locked'}>{bancabiliteScore >= 60 ? <CheckCircle2 size={14} /> : <CircleAlert size={14} />} Exporter son dossier bancaire PDF</li>
-              <li className={bancabiliteScore >= 75 ? 'unlocked' : 'locked'}>{bancabiliteScore >= 75 ? <CheckCircle2 size={14} /> : <CircleAlert size={14} />} Accès prioritaire aux partenaires finance</li>
-            </ul>
-          </div>
         </section>
       </div>
+
+      <section className="panel">
+        <PanelTitle icon={ShieldCheck} title="Permissions selon votre score" />
+        <div className="permissions-progress-grid">
+          <div className={`perm-item ${bancabiliteScore >= 0 ? 'unlocked' : 'locked'}`}><CheckCircle2 size={16} /><div><strong>Publier des produits</strong><small>Score 0+</small></div></div>
+          <div className={`perm-item ${bancabiliteScore >= 20 ? 'unlocked' : 'locked'}`}>{bancabiliteScore >= 20 ? <CheckCircle2 size={16} /> : <CircleAlert size={16} />}<div><strong>Soumettre des preuves</strong><small>Score 20+</small></div></div>
+          <div className={`perm-item ${bancabiliteScore >= 40 ? 'unlocked' : 'locked'}`}>{bancabiliteScore >= 40 ? <CheckCircle2 size={16} /> : <CircleAlert size={16} />}<div><strong>Demander un micro-crédit</strong><small>Score 40+</small></div></div>
+          <div className={`perm-item ${bancabiliteScore >= 60 ? 'unlocked' : 'locked'}`}>{bancabiliteScore >= 60 ? <CheckCircle2 size={16} /> : <CircleAlert size={16} />}<div><strong>Exporter dossier PDF</strong><small>Score 60+</small></div></div>
+          <div className={`perm-item ${bancabiliteScore >= 75 ? 'unlocked' : 'locked'}`}>{bancabiliteScore >= 75 ? <CheckCircle2 size={16} /> : <CircleAlert size={16} />}<div><strong>Accès partenaires finance</strong><small>Score 75+</small></div></div>
+        </div>
+      </section>
     </PageFrame>
   );
 }
