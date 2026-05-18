@@ -1852,7 +1852,7 @@ function AdminHomePage({ navigate, stats, store }) {
             <div className="opportunity-list">
               {opportunities.map((item) => (
                 <button key={item.id} type="button" onClick={() => navigate(item.path)}>
-                  <IconCirclé icon={item.icon} />
+                  <IconCircle icon={item.icon} />
                   <span>
                     <strong>{item.title}</strong>
                     <small>{item.body}</small>
@@ -1981,7 +1981,7 @@ function SellerHomePage({ currentUser, navigate, store }) {
             <div className="opportunity-list">
               {actions.map((item) => (
                 <button key={item.id} type="button" onClick={() => navigate(item.path)}>
-                  <IconCirclé icon={item.icon} />
+                  <IconCircle icon={item.icon} />
                   <span>
                     <strong>{item.title}</strong>
                     <small>{item.body}</small>
@@ -2699,7 +2699,7 @@ function ProductsPage({ actions, currentUser, notify, store }) {
                       key={product.id}
                       product={product}
                       seller={store.users.find((user) => user.id === product.ownerId)}
-                      vérifierMode={canVerifyProducts}
+                      verifierMode={canVerifyProducts}
                       managerMode={allowed}
                       onDelete={() => actions.setProducts((items) => items.filter((item) => item.id !== product.id))}
                       onEdit={() => startEdit(product)}
@@ -6539,7 +6539,7 @@ function AccountPage({ actions, currentUser, notify, store }) {
   );
 }
 
-function ProductCard({ clientMode, managerMode, onContact, onAddToCart, onDelete, onEdit, onVerify, product, seller, vérifierMode }) {
+function ProductCard({ clientMode, managerMode, onContact, onAddToCart, onDelete, onEdit, onVerify, product, seller, verifierMode }) {
   const productImages = Array.isArray(product.images) && product.images.length
     ? product.images
     : (product.image ? [product.image] : []);
@@ -6647,16 +6647,16 @@ function ProductCard({ clientMode, managerMode, onContact, onAddToCart, onDelete
           </div>
         )}
 
-        {(vérifierMode || managerMode) && (
+        {(verifierMode || managerMode) && (
           <div className="button-row">
-            {vérifierMode && product.fieldVerificationStatus && (
+            {verifierMode && product.fieldVerificationStatus && (
               <span className={`verification-badge ${product.fieldVerificationStatus === 'Fiable' ? 'verified-ok' : 'verified-ko'}`}>
                 {product.fieldVerificationStatus === 'Fiable' ? <ShieldCheck size={14} /> : <CircleAlert size={14} />}
                 {product.fieldVerificationStatus}
               </span>
             )}
-            {vérifierMode && <Button onClick={() => onVerify?.('Fiable')}><ShieldCheck size={16} /> Fiable</Button>}
-            {vérifierMode && <Button variant="secondary" onClick={() => onVerify?.('A revoir')}><CircleAlert size={16} /> A revoir</Button>}
+            {verifierMode && <Button onClick={() => onVerify?.('Fiable')}><ShieldCheck size={16} /> Fiable</Button>}
+            {verifierMode && <Button variant="secondary" onClick={() => onVerify?.('A revoir')}><CircleAlert size={16} /> A revoir</Button>}
             {managerMode && onEdit && <Button variant="secondary" onClick={onEdit}><Settings size={16} /> Modifier</Button>}
             {managerMode && <button className="icon-danger" type="button" onClick={onDelete} aria-label="Supprimer produit"><Trash2 size={16} /></button>}
           </div>
