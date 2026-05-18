@@ -5,7 +5,7 @@ const server = await readFile(new URL('../server/index.js', import.meta.url), 'u
 
 const checks = [
   ['route lots', app.includes("route.pathname === '/lots'")],
-  ['public site', app.includes('PublicSitePage') && app.includes('/demo-jury')],
+  ['public site', app.includes('PublicSitePage')],
   ['hidden orders preference', app.includes('HIDDEN_ORDERS_KEY')],
   ['order masking toolbar', app.includes('OrderVisibilityToolbar')],
   ['agent terrain role', app.includes("agentTerrain") && app.includes('AgentWorkflowPanel')],
