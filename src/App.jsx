@@ -2045,7 +2045,17 @@ function SellerHomePage({ currentUser, navigate, store }) {
               </div>
             </div>
           </div>
-          <NoticeCard icon={ShieldCheck} title="Comment ca marche" body="Vos ventes, livraisons et preuves sont converties en score de 0 à 100. A 75+, vous pouvez exporter un dossier bancaire verifiable par QR code." />
+          <NoticeCard icon={ShieldCheck} title="Comment ça marche" body="Vos ventes, livraisons et preuves sont converties en score de 0 à 100. À 75+, vous pouvez exporter un dossier bancaire vérifiable par QR code." />
+          <div className="permissions-progress">
+            <strong>Permissions débloquées selon votre score :</strong>
+            <ul>
+              <li className={bancabiliteScore >= 0 ? 'unlocked' : 'locked'}><CheckCircle2 size={14} /> Publier des produits et recevoir des commandes</li>
+              <li className={bancabiliteScore >= 20 ? 'unlocked' : 'locked'}>{bancabiliteScore >= 20 ? <CheckCircle2 size={14} /> : <CircleAlert size={14} />} Soumettre des preuves économiques</li>
+              <li className={bancabiliteScore >= 40 ? 'unlocked' : 'locked'}>{bancabiliteScore >= 40 ? <CheckCircle2 size={14} /> : <CircleAlert size={14} />} Demander un micro-crédit</li>
+              <li className={bancabiliteScore >= 60 ? 'unlocked' : 'locked'}>{bancabiliteScore >= 60 ? <CheckCircle2 size={14} /> : <CircleAlert size={14} />} Exporter son dossier bancaire PDF</li>
+              <li className={bancabiliteScore >= 75 ? 'unlocked' : 'locked'}>{bancabiliteScore >= 75 ? <CheckCircle2 size={14} /> : <CircleAlert size={14} />} Accès prioritaire aux partenaires finance</li>
+            </ul>
+          </div>
         </section>
       </div>
     </PageFrame>
@@ -4070,6 +4080,27 @@ function getClientVerificationLevel(score) {
   return 0;
 }
 
+function openAttachment(attachment) {
+  const src = attachment.url || attachment.dataUrl;
+  if (!src) return;
+  if (src.startsWith('data:')) {
+    const win = window.open('', '_blank');
+    if (!win) return;
+    const isImage = src.startsWith('data:image');
+    const isPdf = src.startsWith('data:application/pdf');
+    if (isImage) {
+      win.document.write(`<html><head><title>${attachment.name || 'Document'}</title></head><body style="margin:0;display:flex;justify-content:center;align-items:center;min-height:100vh;background:#1a1a1a"><img src="${src}" style="max-width:100%;max-height:100vh;object-fit:contain" /></body></html>`);
+    } else if (isPdf) {
+      win.document.write(`<html><head><title>${attachment.name || 'Document'}</title></head><body style="margin:0"><embed src="${src}" type="application/pdf" width="100%" height="100%" style="position:fixed;inset:0" /></body></html>`);
+    } else {
+      win.document.write(`<html><head><title>${attachment.name || 'Document'}</title></head><body style="padding:2rem;font-family:system-ui"><h2>${attachment.name || 'Fichier'}</h2><p>Type: ${attachment.type || 'inconnu'}</p><a href="${src}" download="${attachment.name || 'fichier'}">Télécharger le fichier</a></body></html>`);
+    }
+    win.document.close();
+  } else {
+    window.open(src, '_blank');
+  }
+}
+
 function ActivityProofPage({ actions, currentUser, navigate, notify, store }) {
   const [selectedType, setSelectedType] = useState('');
   const [description, setDescription] = useState('');
@@ -4345,7 +4376,7 @@ function ActivityProofPage({ actions, currentUser, navigate, notify, store }) {
                     <strong>{farmer?.name || 'Agriculteur'}</strong> - {config?.label || proof.proofType}
                     {proof.status === 'en_attente_agent' && <Badge style={{ marginLeft: '0.5rem', fontSize: '0.65rem' }}>Attente confirmation agent</Badge>}
                     <small style={{ display: 'block', color: 'var(--muted)' }}>{new Date(proof.createdAt).toLocaleDateString('fr-FR')} - {farmer?.region || ''}</small>
-                    {proof.attachment && <small style={{ display: 'block' }}><a href={proof.attachment.url || proof.attachment.dataUrl} target="_blank" rel="noopener">Voir pièce jointe</a></small>}
+                    {proof.attachment && <small style={{ display: 'block' }}><button type="button" onClick={() => openAttachment(proof.attachment)} style={{ background: 'none', border: 'none', color: 'var(--blue-600, #2563eb)', cursor: 'pointer', textDecoration: 'underline', padding: 0, fontSize: 'inherit' }}>Voir pièce jointe</button></small>}
                     {proof.agentId && <small style={{ display: 'block' }}>Agent désigné : {store.users.find((u) => u.id === proof.agentId)?.name || proof.agentId}</small>}
                   </div>
                   <div style={{ display: 'flex', gap: '0.5rem' }}>
@@ -4385,9 +4416,9 @@ function ActivityProofPage({ actions, currentUser, navigate, notify, store }) {
                       </div>
                       <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
                         {proof.attachment && (
-                          <a href={proof.attachment.url || proof.attachment.dataUrl} target="_blank" rel="noopener" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem', padding: '0.35rem 0.75rem', background: 'var(--surface-alt, #f3f4f6)', borderRadius: '0.375rem', fontSize: '0.75rem', fontWeight: 600, color: 'var(--blue-600, #2563eb)', textDecoration: 'none' }}>
+                          <button type="button" onClick={() => openAttachment(proof.attachment)} style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem', padding: '0.35rem 0.75rem', background: 'var(--surface-alt, #f3f4f6)', borderRadius: '0.375rem', fontSize: '0.75rem', fontWeight: 600, color: 'var(--blue-600, #2563eb)', border: 'none', cursor: 'pointer' }}>
                             <Eye size={14} /> Voir document
-                          </a>
+                          </button>
                         )}
                         {(proof.status === 'en_attente' || proof.status === 'en_attente_agent') && (
                           <>
@@ -5690,6 +5721,7 @@ function BancabilitePage({ actions, currentUser, notify, store }) {
   const isFinancePartner = currentUser.role === 'partenaire';
   const isAgriculteur = currentUser.role === 'agriculteur';
   const [filter, setFilter] = useState('all');
+  const [searchQuery, setSearchQuery] = useState('');
   const [loanForm, setLoanForm] = useState({ amount: '', purpose: '', months: '6' });
   const [showLoanForm, setShowLoanForm] = useState(false);
 
@@ -5702,10 +5734,14 @@ function BancabilitePage({ actions, currentUser, notify, store }) {
   const myLoans = loans.filter((loan) => loan.farmerId === currentUser.id || loan.partnerId === currentUser.id);
 
   const enriched = scope.map((user) => ({ user, dossier: buildBancabiliteDossier(user, store) }));
-  const visible = enriched.filter(({ dossier }) => {
-    if (filter === 'eligible') return dossier.score >= 60;
-    if (filter === 'pending') return dossier.score >= 40 && dossier.score < 60;
-    if (filter === 'risky') return dossier.score < 40;
+  const visible = enriched.filter(({ user, dossier }) => {
+    if (filter === 'eligible' && dossier.score < 60) return false;
+    if (filter === 'pending' && (dossier.score < 40 || dossier.score >= 60)) return false;
+    if (filter === 'risky' && dossier.score >= 40) return false;
+    if (searchQuery.trim()) {
+      const q = searchQuery.trim().toLowerCase();
+      return user.name.toLowerCase().includes(q) || user.id.toLowerCase().includes(q) || (user.region || '').toLowerCase().includes(q) || (user.email || '').toLowerCase().includes(q);
+    }
     return true;
   });
 
@@ -5916,6 +5952,7 @@ function BancabilitePage({ actions, currentUser, notify, store }) {
 
           <section className="panel">
             <div className="loan-filter-bar">
+              <input type="text" placeholder="Rechercher par nom, ID ou région..." value={searchQuery} onChange={(event) => setSearchQuery(event.target.value)} style={{ flex: 1, minWidth: '200px', padding: '0.5rem 0.75rem', borderRadius: '0.375rem', border: '1px solid var(--border, #e5e7eb)', fontSize: '0.85rem' }} />
               {[
                 ['all', 'Tous'],
                 ['eligible', 'Éligibles'],
@@ -8019,17 +8056,29 @@ function useProductionStore() {
     }
 
     syncFromRemote();
-    const id = setInterval(syncFromRemote, 4000);
+    const id = setInterval(syncFromRemote, 3000);
     const onVisibility = () => {
       if (document.visibilityState === 'visible') syncFromRemote();
     };
+    const onStorageChange = (event) => {
+      if (event.key === STORAGE_KEY && event.newValue && !pendingMutation.current) {
+        try {
+          const updated = JSON.parse(event.newValue);
+          const normalized = normalizeStore(updated);
+          lastSyncedSerialized.current = JSON.stringify(normalized);
+          setStoreRaw(normalized);
+        } catch {}
+      }
+    };
     document.addEventListener('visibilitychange', onVisibility);
     window.addEventListener('focus', syncFromRemote);
+    window.addEventListener('storage', onStorageChange);
     return () => {
       cancelled = true;
       clearInterval(id);
       document.removeEventListener('visibilitychange', onVisibility);
       window.removeEventListener('focus', syncFromRemote);
+      window.removeEventListener('storage', onStorageChange);
     };
   }, []);
 
