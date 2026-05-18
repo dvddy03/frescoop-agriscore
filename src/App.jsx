@@ -5535,6 +5535,41 @@ function BancabilitePage({ actions, currentUser, notify, store }) {
         );
       })()}
 
+      {isAgriculteur && (() => {
+        const mySales = (store.orders || [])
+          .filter((order) => order.sellerId === currentUser.id)
+          .sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0))
+          .slice(0, 3);
+        return (
+          <section className="panel">
+            <PanelTitle icon={Sprout} title="Comment votre score est alimenté" />
+            <p className="muted">Chaque vente enregistrée sur FresCoop nourrit directement votre score de bancabilité. Vos 3 dernières ventes :</p>
+            {mySales.length === 0 ? (
+              <EmptyState icon={ReceiptText} title="Aucune vente pour l'instant" body="Publiez vos lots et vendez sur FresCoop : chaque transaction renforce votre dossier de crédit." />
+            ) : (
+              <ul className="score-feed-list">
+                {mySales.map((order) => {
+                  const product = getOrderProduct(order, store);
+                  const isAntiWaste = Number(product?.flashSaleDiscountPct || 0) > 0;
+                  return (
+                    <li key={order.id}>
+                      <div>
+                        <b>{product?.name || 'Produit'}</b>
+                        <small>{formatDate(order.createdAt)} · {order.quantity} unités</small>
+                      </div>
+                      <div className="score-feed-meta">
+                        {isAntiWaste && <span className="badge-antiwaste"><Leaf size={13} /> Anti-gaspi</span>}
+                        <b>{formatMoney(getOrderTotal(order, store))}</b>
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </section>
+        );
+      })()}
+
       {isAgriculteur && (
         <section className="panel">
           <PanelToolbar icon={Landmark} title="Demander un prêt" action={

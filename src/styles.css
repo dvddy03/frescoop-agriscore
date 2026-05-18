@@ -7107,6 +7107,50 @@ button.btn {
 
 .bancabilite-kpi b { color: var(--ink); font-size: 0.88rem; }
 
+/* Encart "Comment votre score est alimenté" */
+.score-feed-list {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.score-feed-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--wash);
+}
+
+.score-feed-list li b { color: var(--ink); font-weight: 900; }
+
+.score-feed-list li small {
+  display: block;
+  color: var(--muted);
+  font-size: 0.74rem;
+  font-weight: 800;
+}
+
+.score-feed-meta { display: flex; align-items: center; gap: 10px; }
+
+.badge-antiwaste {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: rgba(79, 176, 126, 0.16);
+  color: var(--green-700);
+  font-size: 0.72rem;
+  font-weight: 850;
+  white-space: nowrap;
+}
+
 /* ==========================================================================
    PRODUCT CARD - raffinements + stock épuisé + cart vide
    ========================================================================== */
