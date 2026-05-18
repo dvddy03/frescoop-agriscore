@@ -81,7 +81,6 @@ const MAX_FILE_SIZE = 2 * 1024 * 1024;
 const PRODUCT_PAGE_SIZE_OPTIONS = [6, 9, 12];
 const ORDER_PAGE_SIZE_OPTIONS = [5, 10, 20];
 const SEEDED_ADMIN_EMAIL = 'amethsl2218@gmail.com';
-const SEEDED_ADMIN_PASSWORD_HASH = '62a1a5600217bfc84fa5ac26faf898b366581f3b1512624444654b795b108a92';
 const SEEDED_ADMIN_USER = {
   id: 'usr-admin-uemoa',
   createdAt: '2026-04-28T00:00:00.000Z',
@@ -93,7 +92,6 @@ const SEEDED_ADMIN_USER = {
   organization: 'FresCoop',
   region: '',
   bio: '',
-  passwordHash: SEEDED_ADMIN_PASSWORD_HASH,
 };
 const SEEDED_ADMIN_USERS = [
   SEEDED_ADMIN_USER,
@@ -108,7 +106,6 @@ const SEEDED_ADMIN_USERS = [
     organization: 'FresCoop',
     region: '',
     bio: '',
-    passwordHash: SEEDED_ADMIN_PASSWORD_HASH,
   },
   {
     id: 'usr-admin-dsenghor96',
@@ -121,7 +118,6 @@ const SEEDED_ADMIN_USERS = [
     organization: 'FresCoop',
     region: '',
     bio: '',
-    passwordHash: SEEDED_ADMIN_PASSWORD_HASH,
   },
   {
     id: 'usr-admin-nyacine183',
@@ -134,7 +130,6 @@ const SEEDED_ADMIN_USERS = [
     organization: 'FresCoop',
     region: '',
     bio: '',
-    passwordHash: SEEDED_ADMIN_PASSWORD_HASH,
   },
   {
     id: 'usr-admin-seydinalimamoulayeyade',
@@ -147,7 +142,6 @@ const SEEDED_ADMIN_USERS = [
     organization: 'FresCoop',
     region: '',
     bio: '',
-    passwordHash: SEEDED_ADMIN_PASSWORD_HASH,
   },
   {
     id: 'usr-admin-diagnealia03',
@@ -160,7 +154,6 @@ const SEEDED_ADMIN_USERS = [
     organization: 'FresCoop',
     region: '',
     bio: '',
-    passwordHash: SEEDED_ADMIN_PASSWORD_HASH,
   },
   {
     id: 'usr-admin-manediop945',
@@ -173,7 +166,6 @@ const SEEDED_ADMIN_USERS = [
     organization: 'FresCoop',
     region: '',
     bio: '',
-    passwordHash: SEEDED_ADMIN_PASSWORD_HASH,
   },
   {
     id: 'usr-admin-papa',
@@ -186,7 +178,6 @@ const SEEDED_ADMIN_USERS = [
     organization: 'FresCoop',
     region: '',
     bio: '',
-    passwordHash: SEEDED_ADMIN_PASSWORD_HASH,
   },
   {
     id: 'usr-admin-niangra',
@@ -199,7 +190,6 @@ const SEEDED_ADMIN_USERS = [
     organization: 'FresCoop',
     region: '',
     bio: '',
-    passwordHash: SEEDED_ADMIN_PASSWORD_HASH,
   },
 ];
 
@@ -7806,7 +7796,6 @@ function ensureSeedAdmin(users) {
           role: seed.role || 'admin',
           status: 'Actif',
           organization: current.organization || seed.organization,
-          passwordHash: seed.passwordHash,
         }
       : seed;
   });
