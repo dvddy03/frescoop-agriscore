@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FresCoop - Pitch Hackathon GIM-UEMOA 2026</title>
+<style>
+@page { size: A4; margin: 2cm; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', system-ui, sans-serif; line-height: 1.6; color: #1a1a1a; max-width: 210mm; margin: 0 auto; padding: 2cm; }
+h1 { font-size: 2rem; color: #0f5132; margin-bottom: 0.5rem; }
+h2 { font-size: 1.4rem; color: #0f5132; margin: 2rem 0 0.8rem; border-bottom: 2px solid #0f5132; padding-bottom: 0.3rem; }
+h3 { font-size: 1.1rem; color: #1a4d3a; margin: 1.2rem 0 0.5rem; }
+p { margin-bottom: 0.8rem; }
+.header { text-align: center; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 3px solid #0f5132; }
+.header small { display: block; color: #666; font-size: 0.9rem; margin-top: 0.3rem; }
+.stat-hero { display: flex; gap: 1.5rem; justify-content: center; margin: 1.5rem 0; flex-wrap: wrap; }
+.stat-hero div { text-align: center; padding: 1rem 1.5rem; background: #f0fdf4; border-radius: 8px; border: 1px solid #bbf7d0; }
+.stat-hero div strong { display: block; font-size: 1.8rem; color: #0f5132; }
+.stat-hero div span { font-size: 0.8rem; color: #555; }
+ul { margin: 0.5rem 0 1rem 1.5rem; }
+li { margin-bottom: 0.4rem; }
+.highlight { background: #fef3c7; padding: 1rem 1.2rem; border-radius: 8px; border-left: 4px solid #d97706; margin: 1rem 0; }
+.highlight strong { color: #92400e; }
+table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.9rem; }
+th, td { padding: 0.5rem 0.8rem; text-align: left; border-bottom: 1px solid #e5e7eb; }
+th { background: #f0fdf4; color: #0f5132; font-weight: 600; }
+.footer { margin-top: 2rem; padding-top: 1rem; border-top: 2px solid #0f5132; text-align: center; font-size: 0.85rem; color: #666; }
+.page-break { page-break-before: always; }
+.badge { display: inline-block; background: #0f5132; color: white; padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.8rem; margin-bottom: 0.5rem; }
+.vs-table td:first-child { font-weight: 600; }
+.check { color: #16a34a; }
+.cross { color: #dc2626; }
+</style>
+</head>
+<body>
+
+<!-- PAGE 1 -->
+<div class="header">
+<span class="badge">HACKATHON FILIERES AGRICOLES GIM-UEMOA 2026</span>
+<h1>FresCoop</h1>
+<p><strong>Rendre les agriculteurs UEMOA bancables par la preuve d'activite reelle</strong></p>
+<small>Equipe FresCoop | Point 4 : Acces limite au financement agricole</small>
+</div>
+
+<div class="stat-hero">
+<div><strong>80%</strong><span>des agriculteurs UEMOA<br>exclus du credit</span></div>
+<div><strong>0</strong><span>historique bancaire<br>pour un producteur rural</span></div>
+<div><strong>3 mois</strong><span>pour devenir bancable<br>avec FresCoop</span></div>
+</div>
+
+<h2>Resume executif</h2>
+<p><strong>FresCoop</strong> est une plateforme digitale qui transforme l'activite agricole informelle (ventes, livraisons, paiements mobile money) en un <strong>score de bancabilite de 0 a 100</strong> et un <strong>dossier bancaire portable verifiable par QR code</strong>, presentable a toute banque ou SFD de la zone UEMOA.</p>
+
+<p>Notre solution repond directement a la friction #4 identifiee par l'atelier d'ideation GIM-UEMOA : <em>"Manque de confiance pour financer, mode de financement peu adapte"</em>.</p>
+
+<div class="highlight">
+<strong>Proposition de valeur :</strong> En 3 mois d'utilisation normale (vendre ses produits, recevoir des paiements), un agriculteur passe d'invisible a financable — sans aucune demarche administrative supplementaire.
+</div>
+
+<!-- PAGE 2 -->
+<h2 class="page-break">Le probleme a resoudre</h2>
+
+<h3>Diagnostic terrain</h3>
+<p>Dans les 8 pays de l'UEMOA, les agriculteurs sont structurellement exclus du systeme financier :</p>
+
+<ul>
+<li><strong>Pas d'historique bancaire</strong> — les transactions sont en especes, non tracees</li>
+<li><strong>Pas de garantie tangible</strong> — pas de titre foncier, pas de bilan comptable</li>
+<li><strong>Pas de confiance institutionnelle</strong> — les banques ne peuvent pas evaluer le risque</li>
+<li><strong>Modes de financement inadaptes</strong> — taux eleves, delais longs, exigences urbaines</li>
+</ul>
+
+<h3>Consequences directes</h3>
+<ul>
+<li>Impossibilite d'acheter des intrants de qualite au bon moment (friction #1)</li>
+<li>Dependance aux intermediaires et vente a perte (friction #2)</li>
+<li>Pertes post-recolte par manque d'investissement dans le stockage (friction #3)</li>
+<li>Cercle vicieux : pas de credit → pas d'investissement → pas de croissance</li>
+</ul>
+
+<div class="highlight">
+<strong>Point cle :</strong> Le financement agricole est le verrou qui bloque toute la chaine. Resoudre le Point 4, c'est debloquer les Points 1, 2 et 3 en cascade.
+</div>
+
+<h3>Ce que dit le rapport GIM-UEMOA</h3>
+<p>Solution attendue : <em>"Banque de donnees et Plateforme de scoring pour susciter la confiance basee sur la cooperation de production, data cultures, titres fonciers, previsions des recoltes."</em></p>
+<p>Valeur attendue : <em>"Acces aux canaux de financement, facilite d'acquisition et de renouvellement de ligne de credit, credibilite des producteurs."</em></p>
+
+<!-- PAGE 3 -->
+<h2 class="page-break">Notre solution : FresCoop</h2>
+
+<h3>Architecture en 5 piliers</h3>
+
+<table>
+<thead><tr><th>Pilier</th><th>Description</th><th>Impact scoring</th></tr></thead>
+<tbody>
+<tr><td>1. Captation automatique</td><td>Chaque vente, livraison et paiement (PayDunya, Orange Money, Wave) genere des donnees de scoring sans effort</td><td>+2 pts/transaction</td></tr>
+<tr><td>2. Scoring intelligent</td><td>Score de 0 a 100 calcule en temps reel : anciennete, volume ventes, paiements verifies, lots traces, attestations</td><td>7 criteres ponderes</td></tr>
+<tr><td>3. Dossier bancaire portable</td><td>PDF avec QR code de verification, presentable a toute institution financiere. L'agriculteur garde le controle</td><td>Export 1 clic</td></tr>
+<tr><td>4. Demande de credit</td><td>A score >= 40, demande de pret en 1 clic. Les partenaires finance recoivent et instruisent directement</td><td>Montant simule auto</td></tr>
+<tr><td>5. Verification terrain</td><td>Agents specialises valident identite et activite. Visite = +40 points. Preuve humaine + digitale</td><td>Confiance maximale</td></tr>
+</tbody>
+</table>
+
+<h3>Parcours utilisateur type</h3>
+<ol style="margin: 0.5rem 0 1rem 1.5rem;">
+<li>Inscription et verification d'identite (CNI) — gratuit</li>
+<li>Publication de produits sur le marketplace</li>
+<li>Reception de commandes d'acheteurs B2B/clients</li>
+<li>Paiement confirme via PayDunya (trace automatiquement)</li>
+<li>Score de bancabilite qui monte a chaque operation</li>
+<li>A 60+ : simulation du montant eligible affichee</li>
+<li>A 75+ : export du dossier + demande de credit 1 clic</li>
+<li>Partenaire financier instruit et decide en ligne</li>
+</ol>
+
+<h3>Inclusion totale</h3>
+<ul>
+<li><strong>USSD *384*FRES#</strong> — acces sans smartphone pour 70% des producteurs</li>
+<li><strong>Agents terrain</strong> — accompagnement humain dans les zones rurales</li>
+<li><strong>PayDunya</strong> — Orange Money, Wave, Free Money, carte bancaire</li>
+</ul>
+
+<!-- PAGE 4 -->
+<h2 class="page-break">Ce qui fait de FresCoop le projet #1</h2>
+
+<h3>Alignement parfait avec la vision GIM-UEMOA</h3>
+
+<table class="vs-table">
+<thead><tr><th>Critere GIM-UEMOA</th><th>FresCoop</th></tr></thead>
+<tbody>
+<tr><td>Plateforme de scoring</td><td class="check">✓ Score 0-100 temps reel, 7 criteres</td></tr>
+<tr><td>Donnees de production reelles</td><td class="check">✓ Ventes, livraisons, paiements PayDunya traces</td></tr>
+<tr><td>Cooperation de production</td><td class="check">✓ Marketplace cooperative, lots mutualises</td></tr>
+<tr><td>Confiance pour financer</td><td class="check">✓ Dossier verifiable QR code + consentement</td></tr>
+<tr><td>Acces canaux financement</td><td class="check">✓ Demande credit 1 clic, decision en ligne</td></tr>
+<tr><td>Infrastructure interbanque</td><td class="check">✓ Compatible GIM-UEMOA (8 pays), PayDunya</td></tr>
+</tbody>
+</table>
+
+<h3>Avantages competitifs</h3>
+
+<table>
+<thead><tr><th>Dimension</th><th>Solutions existantes</th><th>FresCoop</th></tr></thead>
+<tbody>
+<tr><td>Donnees</td><td>Declarations manuelles</td><td><strong>Captation automatique</strong> via activite reelle</td></tr>
+<tr><td>Acces</td><td>Smartphone obligatoire</td><td><strong>USSD + agents terrain</strong></td></tr>
+<tr><td>Portabilite</td><td>Wallet proprietaire ferme</td><td><strong>Dossier PDF libre</strong>, toute banque</td></tr>
+<tr><td>Verification</td><td>Auto-declaration</td><td><strong>QR code + agent terrain</strong></td></tr>
+<tr><td>Echelonnement</td><td>Tout ou rien</td><td><strong>Score progressif</strong> (Debutant → Bancable)</td></tr>
+<tr><td>Scope</td><td>1 pays, 1 operateur</td><td><strong>8 pays UEMOA</strong>, multi-operateur</td></tr>
+</tbody>
+</table>
+
+<h3>Indicateurs demonstrables (hackathon)</h3>
+<ul>
+<li><strong>Prototype fonctionnel</strong> — inscription, vente, scoring, export dossier, demande credit</li>
+<li><strong>Scoring en temps reel</strong> — visible des la premiere transaction</li>
+<li><strong>Demande de pret</strong> — en 1 clic avec notification partenaire</li>
+<li><strong>Dossier PDF verifiable</strong> — QR code authentifiable</li>
+<li><strong>USSD simule</strong> — accessible sans smartphone</li>
+<li><strong>Dashboard admin</strong> — pipeline financement (combien de bancables, en progression)</li>
+<li><strong>Vue partenaire finance</strong> — consultation, pre-approbation, decision</li>
+</ul>
+
+<!-- PAGE 5 -->
+<h2 class="page-break">Points cles et impact</h2>
+
+<h3>Impact mesurable</h3>
+<div class="stat-hero">
+<div><strong>100%</strong><span>des ventes FresCoop<br>tracees automatiquement</span></div>
+<div><strong>75/100</strong><span>seuil pour etre<br>considere bancable</span></div>
+<div><strong>8 pays</strong><span>UEMOA couverts<br>par l'infrastructure</span></div>
+</div>
+
+<h3>Modele economique</h3>
+<ul>
+<li><strong>Commission marketplace</strong> — 2-3% sur chaque transaction validee</li>
+<li><strong>Service scoring premium</strong> — dossiers detailles pour partenaires finance</li>
+<li><strong>Abonnement SFD/banque</strong> — acces au pipeline d'agriculteurs bancables</li>
+<li><strong>Zero cout pour l'agriculteur</strong> — inscription, scoring et export gratuits</li>
+</ul>
+
+<h3>Scalabilite</h3>
+<ul>
+<li>Architecture cloud-ready (MongoDB Atlas, React, Node.js)</li>
+<li>USSD pour zones rurales sans internet haut debit</li>
+<li>Multi-langue prevu (wolof, pular, bambara)</li>
+<li>API ouverte pour integration avec systemes bancaires GIM-UEMOA existants</li>
+</ul>
+
+<h3>Pourquoi FresCoop gagne ce hackathon</h3>
+<div class="highlight">
+<strong>1. Le bon probleme</strong> — Le financement est le verrou #1 des filieres agricoles. Resoudre le Point 4 debloque les 7 autres frictions en cascade.<br><br>
+<strong>2. La bonne solution</strong> — Pas un wallet de plus. Un score base sur l'activite reelle, un dossier portable, une demande de credit en 1 clic.<br><br>
+<strong>3. Le bon scope</strong> — UEMOA-natif (8 pays), compatible infrastructure GIM, PayDunya multi-operateur, USSD pour inclusion rurale.<br><br>
+<strong>4. Le bon prototype</strong> — Fonctionnel de bout en bout : inscription → vente → scoring → export → demande credit → decision partenaire. Pas un mockup, une application qui tourne.
+</div>
+
+<div class="footer">
+<p><strong>FresCoop</strong> — Hackathon Filieres Agricoles GIM-UEMOA 2026</p>
+<p>Point 4 : Acces limite au financement agricole</p>
+<p>Equipe FresCoop | Contact : seydinalimamoulayeyade@gmail.com</p>
+</div>
+
+</body>
+</html>
