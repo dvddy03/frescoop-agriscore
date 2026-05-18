@@ -2,11 +2,9 @@
 
 Adaptation du projet FresCoop pour le Hackathon Filières Agricoles organisé par le GIM-UEMOA.
 
-FresCoop positionne la solution sur une chaîne de valeur agricole régionale:
+FresCoop répond au **problème n°4 — l'accès au financement agricole** : un score de crédit agricole vérifiable pour producteurs, coopératives et SFD.
 
-- Micro-hubs frigorifiques solaires pour réduire les pertes post-récolte.
-- Intelligence marché pour orienter les lots vers le meilleur débouché.
-- Paiement partenaire et preuve économique portable pour rendre chaque transaction lisible par banques, SFD, fintechs et acheteurs B2B.
+Le cœur de produit est le **scoring de bancabilité**. Chaque vente, paiement et preuve de livraison enregistrés sur la plateforme alimente un dossier de crédit portable, lisible par les banques, SFD, fintechs et acheteurs B2B. La traçabilité du lot et le paiement partenaire ne sont pas une fin en soi : ils produisent la preuve économique qui rend l'agriculteur bancable.
 
 ## Lancer
 
@@ -60,10 +58,9 @@ npm run build
 
 ## Ce que montre la démo UEMOA
 
-- Cockpit exécutif pour pitcher au jury.
-- Parcours du lot du champ au paiement vérifiable.
-- Optimisation de route de vente selon prix net, demande, confiance et délai.
-- Micro-hubs solaires avec capacité, froid, batterie et pertes évitées.
+- Score de bancabilité calculé en temps réel à partir des ventes, paiements et preuves de livraison.
+- Dossier de crédit agricole et preuves économiques exportables pour banques, SFD et partenaires.
+- Parcours du lot du champ au paiement vérifiable — chaque étape nourrit le score.
+- Paiement partenaire (PayDunya) avec reçu vérifiable par QR code.
 - Passeport économique consenti pour productrices, coopératives, collectrices et commerçants.
-- Simulateur d’impact pour les filières agricoles UEMOA.
-- Dossier de bancabilité et preuves exportables pour banques, SFD et partenaires.
+- Simulateur d’impact pour les filières agricoles UEMOA (pertes évitées, revenu additionnel, genre, CO2).
