@@ -207,7 +207,6 @@ const roles = [
   { id: 'admin', label: 'Admin', locked: true },
   { id: 'agriculteur', label: 'Agriculteur' },
   { id: 'agentTerrain', label: 'Agent Terrain' },
-  { id: 'transporteur', label: 'Transporteur' },
   { id: 'client', label: 'Client' },
   { id: 'acheteurB2B', label: 'Acheteur B2B' },
   { id: 'partenaire', label: 'Partenaire finance' },
@@ -315,12 +314,6 @@ const basePageMeta = {
     title: 'Pertes évitées, revenu additionnel, genre, CO2: des chiffres mesurables.',
     body: 'Les KPI du hackathon UEMOA sont calculés à partir des produits, transactions, commandes, dossiers et capteurs saisis.',
   },
-  '/anti-gaspi': {
-    image: publicImages.agriculture,
-    kicker: 'Anti-gaspillage',
-    title: 'Détecter les lots à durée courte et les convertir en ventes éclair.',
-    body: "Dans les filières UEMOA, les pertes post-récolte, le manque de froid et l'absence de preuve de vente bloquent revenu et financement.",
-  },
   '/bancabilite': {
     image: publicImages.impact,
     kicker: 'Inclusion financiere',
@@ -339,35 +332,11 @@ const basePageMeta = {
     title: 'Exporter, importer et synchroniser les données de production.',
     body: 'Les données sont centralisables via API locale et exportables pour migration vers une base de données.',
   },
-  '/secteurs/agriculture': {
-    image: publicImages.agriculture,
-    kicker: 'Secteur agriculture',
-    title: 'Une page dediee aux producteurs et coopératives agricoles.',
-    body: 'Produits, récoltes, pièces terrain, preuves et attestations agricoles sont organisés ensemble.',
-  },
-  '/secteurs/commerce': {
-    image: publicImages.commerce,
-    kicker: 'Secteur commerce',
-    title: 'Une page dediee aux commercants, boutiques et acheteurs B2B.',
-    body: 'Catalogue, ventes, paiements et preuves commerciales restent separes du parcours agricole.',
-  },
-  '/secteurs/logistique': {
-    image: publicImages.logistics,
-    kicker: 'Secteur logistique',
-    title: 'Une page dediee aux transporteurs, hubs et operations terrain.',
-    body: 'Stockage, froid, routes, contacts et capacites sont reunis dans un espace logistique.',
-  },
   '/compte': {
     image: publicImages.account,
     kicker: 'Mon compte',
     title: 'Gérer son profil, ses coordonnées et son activité.',
     body: 'Chaque acteur complete son compte avant de vendre, commander ou soumettre des documents.',
-  },
-  '/pitch': {
-    image: publicImages.impact,
-    kicker: 'Pitch deck',
-    title: 'FresCoop en 5 slides: le pitch pour le jury GIM-UEMOA.',
-    body: 'Probleme, solution, modele economique, impact mesurable et equipe.',
   },
 };
 
@@ -395,12 +364,6 @@ const roleHomeMeta = {
     kicker: 'Accueil client',
     title: 'Acheter localement, suivre ses commandes et parler aux vendeurs.',
     body: 'Un espace simple pour trouver les produits disponibles, confirmer un panier, suivre les commandes et garder les conversations avec les vendeurs.',
-  },
-  transporteur: {
-    image: publicImages.logistics,
-    kicker: 'Accueil transporteur',
-    title: 'Organiser les livraisons, les hubs et la chaine du froid.',
-    body: 'Un tableau de bord terrain pour reperer les commandes a acheminer, suivre les sites operationnels et anticiper les alertes de capacite.',
   },
   acheteurB2B: {
     image: publicImages.market,
@@ -620,15 +583,10 @@ function App() {
         {accessAllowed && route.pathname === '/lots' && <LotIntelligencePage actions={actions} currentUser={currentUser} notify={notify} store={store} />}
         {accessAllowed && route.pathname === '/utilisateurs' && <UsersPage actions={actions} currentUser={currentUser} navigate={navigate} notify={notify} store={store} />}
         {accessAllowed && route.pathname === '/impact' && <ImpactPage stats={stats} store={store} />}
-        {accessAllowed && route.pathname === '/anti-gaspi' && <AntiWastePage actions={actions} currentUser={currentUser} navigate={navigate} notify={notify} store={store} />}
         {accessAllowed && route.pathname === '/bancabilite' && <BancabilitePage actions={actions} currentUser={currentUser} notify={notify} store={store} />}
         {accessAllowed && route.pathname === '/ussd' && <UssdSimulatorPage currentUser={currentUser} store={store} />}
         {accessAllowed && route.pathname === '/donnees' && <DataPage actions={actions} currentUser={currentUser} notify={notify} store={store} />}
-        {accessAllowed && route.pathname === '/secteurs/agriculture' && <SectorPage currentUser={currentUser} kind="agriculture" navigate={navigate} store={store} />}
-        {accessAllowed && route.pathname === '/secteurs/commerce' && <SectorPage currentUser={currentUser} kind="commerce" navigate={navigate} store={store} />}
-        {accessAllowed && route.pathname === '/secteurs/logistique' && <SectorPage currentUser={currentUser} kind="logistique" navigate={navigate} store={store} />}
         {accessAllowed && route.pathname === '/compte' && <AccountPage actions={actions} currentUser={currentUser} notify={notify} store={store} />}
-        {accessAllowed && route.pathname === '/pitch' && <PitchPage navigate={navigate} store={store} />}
       </main>
       <AppFooter currentUser={currentUser} navigate={navigate} />
       <LanguageAssistant currentUser={currentUser} store={store} />
@@ -1180,7 +1138,6 @@ function PublicSurveyPage({ actions, navigate, notify, store }) {
                       <option value="agriculteur">Agriculteur / producteur</option>
                       <option value="acheteurB2B">Acheteur B2B</option>
                       <option value="client">Client particulier</option>
-                      <option value="transporteur">Transporteur</option>
                       <option value="partenaire">Partenaire finance</option>
                       <option value="agentTerrain">Agent terrain</option>
                     </select>
@@ -1293,7 +1250,7 @@ function PublicSurveyPage({ actions, navigate, notify, store }) {
               <div className="survey-why-list">
                 <article>
                   <span className="survey-why-num">1</span>
-                  <div><strong>Identifier les besoins</strong><p>Vente, achat B2B, transport, anti-gaspi ou financement.</p></div>
+                  <div><strong>Identifier les besoins</strong><p>Vente, achat B2B, transport, scoring ou financement.</p></div>
                 </article>
                 <article>
                   <span className="survey-why-num">2</span>
@@ -1690,10 +1647,6 @@ function DashboardPage({ currentUser, navigate, stats, store }) {
 
   if (currentUser.role === 'client') {
     return <ClientHomePage currentUser={currentUser} navigate={navigate} store={store} />;
-  }
-
-  if (currentUser.role === 'transporteur') {
-    return <TransporterHomePage currentUser={currentUser} navigate={navigate} store={store} />;
   }
 
   if (currentUser.role === 'agriculteur') {
@@ -7656,7 +7609,7 @@ function AppFooter({ currentUser, navigate }) {
     { label: 'Accueil', path: getRoleHomePath(currentUser.role) },
     { label: 'Marche', path: '/marche' },
     { label: 'Commandes', path: '/commandes' },
-    { label: 'Anti-gaspi', path: '/anti-gaspi' },
+    { label: 'Bancabilite', path: '/bancabilite' },
     { label: 'Mon compte', path: '/compte' },
   ].filter((item) => canAccessPath(currentUser.role, item.path));
 
@@ -9492,7 +9445,6 @@ function getPrimaryNavLinks(role) {
     admin: ['/', '/utilisateurs', '/bancabilite', '/impact'],
     agriculteur: ['/', '/produits', '/commandes', '/bancabilite'],
     agentTerrain: ['/', '/verification', '/commandes', '/operations'],
-    transporteur: ['/', '/operations', '/lots', '/commandes'],
     client: ['/', '/marche', '/commandes'],
     acheteurB2B: ['/', '/marche', '/lots', '/commandes'],
     partenaire: ['/', '/bancabilite', '/impact'],
@@ -9538,14 +9490,6 @@ function getMenuLinks(role) {
       '/ussd',
       '/compte',
     ],
-    transporteur: [
-      '/',
-      '/verification',
-      '/operations',
-      '/lots',
-      '/commandes',
-      '/compte',
-    ],
     client: [
       '/',
       '/marche',
@@ -9588,9 +9532,6 @@ function getMenuGroups(role, menuLinks) {
       { title: 'Terrain', paths: ['/', '/verification', '/commandes', '/produits', '/operations', '/lots', '/compte'] },
       { title: 'Inclusion', paths: ['/impact', '/ussd'] },
     ],
-    transporteur: [
-      { title: 'Espace transporteur', paths: ['/', '/verification', '/operations', '/lots', '/commandes', '/compte'] },
-    ],
     client: [
       { title: 'Mon espace', paths: ['/', '/marche', '/commandes', '/paiement', '/compte'] },
     ],
@@ -9599,7 +9540,7 @@ function getMenuGroups(role, menuLinks) {
     ],
     partenaire: [
       { title: 'Finance & scoring', paths: ['/', '/bancabilite', '/impact', '/lots', '/compte'] },
-      { title: 'Engagement terrain', paths: ['/anti-gaspi', '/ussd'] },
+      { title: 'Outils terrain', paths: ['/ussd'] },
     ],
   };
   const itemByPath = new Map(menuLinks.map((item) => [item.path, item]));
@@ -9638,15 +9579,10 @@ function navItemByPath(path) {
     '/operations': { path: '/operations', label: 'Opérations', icon: Warehouse, description: 'Hubs, stockage et logistique' },
     '/utilisateurs': { path: '/utilisateurs', label: 'Utilisateurs', icon: Users, description: 'Comptes, rôles et statuts' },
     '/impact': { path: '/impact', label: 'Impact', icon: BarChart3, description: 'KPI filières UEMOA: pertes évitées, revenu +, genre, CO2' },
-    '/anti-gaspi': { path: '/anti-gaspi', label: 'Anti-gaspi', icon: Leaf, description: 'Alertes DLC et ventes éclair anti-gaspillage' },
     '/bancabilite': { path: '/bancabilite', label: 'Bancabilité', icon: Landmark, description: 'Score crédit et dossier finance exportable' },
     '/ussd': { path: '/ussd', label: 'USSD', icon: PhoneCall, description: 'Accès *384*FRES# pour téléphones sans Internet' },
     '/donnees': { path: '/donnees', label: 'Données', icon: Database, description: 'Export, import et maintenance' },
-    '/secteurs/agriculture': { path: '/secteurs/agriculture', label: 'Agriculture', icon: Tractor, description: 'Page dédiée au secteur agricole' },
-    '/secteurs/commerce': { path: '/secteurs/commerce', label: 'Commerce', icon: Store, description: 'Page dédiée au secteur commercial' },
-    '/secteurs/logistique': { path: '/secteurs/logistique', label: 'Logistique', icon: Truck, description: 'Page dédiée au secteur logistique' },
     '/compte': { path: '/compte', label: 'Compte', icon: UserCheck, description: 'Profil et coordonnées' },
-    '/pitch': { path: '/pitch', label: 'Pitch', icon: Activity, description: 'Pitch deck GIM-UEMOA hackathon' },
   };
   return items[path];
 }
