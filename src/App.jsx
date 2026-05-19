@@ -410,6 +410,16 @@ const publicSitePaths = [
   '/questionnaire',
 ];
 
+// Routes de la démo publique « AgriScore by FresCoop ».
+// Déclarées publiques pour qu'aucun effet de redirection vers /login
+// ne s'applique : la démo jury doit être accessible sans authentification.
+const agriScorePaths = [
+  '/agriscore',
+  '/public/agriscore',
+  '/demo-agriscore',
+  '/bancabilite-demo',
+];
+
 function App() {
   const [route, setRoute] = useState(getCurrentRoute);
   const [store, setStore, forceReplaceStore] = useProductionStore();
@@ -495,10 +505,10 @@ function App() {
 
   // Démo hackathon « AgriScore by FresCoop » — parcours public autonome,
   // accessible sans authentification et sans dépendance backend.
-  if (route.pathname === '/agriscore' || route.pathname === '/demo-agriscore' || route.pathname === '/bancabilite-demo') {
+  if (agriScorePaths.includes(route.pathname)) {
     return (
       <>
-        <AgriScoreDemoPage navigate={navigate} />
+        <AgriScoreDemoPage navigate={navigate} route={route} />
         {toast && <Toast toast={toast} />}
       </>
     );
@@ -1308,6 +1318,13 @@ function LoginPage({ actions, notify, onLogin, store }) {
     region: '',
     gender: '',
   });
+  const [registerErrors, setRegisterErrors] = useState({});
+
+  // Met à jour un champ d'inscription et efface son message d'erreur.
+  function changeRegister(key, value) {
+    updateForm(setRegisterForm, key, value);
+    setRegisterErrors((prev) => (prev[key] ? { ...prev, [key]: '' } : prev));
+  }
 
   async function login(event) {
     event.preventDefault();
@@ -1336,14 +1353,20 @@ function LoginPage({ actions, notify, onLogin, store }) {
     const name = (registerForm.name || '').trim();
     const emailInput = (registerForm.email || '').trim();
     const password = registerForm.password || '';
-    if (!name || !emailInput || !password) {
-      notify('Nom, email et mot de passe sont obligatoires', 'error');
+
+    // Validation par champ : message explicite sous chaque champ obligatoire.
+    const fieldErrors = {};
+    if (!name) fieldErrors.name = 'Ce champ est requis';
+    if (!emailInput) fieldErrors.email = 'Ce champ est requis';
+    else if (!/^\S+@\S+\.\S+$/.test(emailInput)) fieldErrors.email = 'Adresse email invalide';
+    if (!password) fieldErrors.password = 'Ce champ est requis';
+    else if (password.length < 6) fieldErrors.password = 'Au moins 6 caractères';
+    if (Object.keys(fieldErrors).length) {
+      setRegisterErrors(fieldErrors);
+      notify('Veuillez corriger les champs indiqués', 'error');
       return;
     }
-    if (password.length < 6) {
-      notify('Le mot de passe doit faire au moins 6 caractères', 'error');
-      return;
-    }
+    setRegisterErrors({});
 
     try {
       const resp = await fetch(API_BASE + '/api/auth/register', {
@@ -1410,8 +1433,8 @@ function LoginPage({ actions, notify, onLogin, store }) {
                 {roles.filter((role) => role.id !== 'admin').map((role) => <option key={role.id} value={role.id}>{role.label}</option>)}
               </select>
             </Field>
-            <Field label="Nom complet / structure" required><input value={registerForm.name} onChange={(event) => updateForm(setRegisterForm, 'name', event.target.value)} /></Field>
-            <Field label="Email" required><input type="email" value={registerForm.email} onChange={(event) => updateForm(setRegisterForm, 'email', event.target.value)} /></Field>
+            <Field label="Nom complet / structure" required error={registerErrors.name}><input value={registerForm.name} onChange={(event) => changeRegister('name', event.target.value)} /></Field>
+            <Field label="Email" required error={registerErrors.email}><input type="email" value={registerForm.email} onChange={(event) => changeRegister('email', event.target.value)} /></Field>
             <Field label="Téléphone"><input value={registerForm.phone} onChange={(event) => updateForm(setRegisterForm, 'phone', event.target.value)} /></Field>
             <Field label="Organisation"><input value={registerForm.organization} onChange={(event) => updateForm(setRegisterForm, 'organization', event.target.value)} /></Field>
             <Field label="Région"><input value={registerForm.region} onChange={(event) => updateForm(setRegisterForm, 'region', event.target.value)} /></Field>
@@ -1422,7 +1445,7 @@ function LoginPage({ actions, notify, onLogin, store }) {
                 <option value="M">Homme</option>
               </select>
             </Field>
-            <Field label="Mot de passe" required><PasswordInput value={registerForm.password} onChange={(event) => updateForm(setRegisterForm, 'password', event.target.value)} /></Field>
+            <Field label="Mot de passe" required error={registerErrors.password}><PasswordInput value={registerForm.password} onChange={(event) => changeRegister('password', event.target.value)} /></Field>
           </div>
           <Button type="submit"><UserCheck size={18} /> Créer mon espace</Button>
         </form>
@@ -7574,6 +7597,40 @@ function PendingApprovalPage({ user, logout, navigate, actions, notify, store })
         </div>
       )}
 
+      {isFarmer && (
+        <div style={{ margin: '0 0 1.5rem', padding: '1.25rem', background: '#fff', border: '1px solid var(--line, #d7e5dc)', borderRadius: '0.75rem' }}>
+          <h3 style={{ margin: '0 0 0.35rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <ClipboardCheck size={20} /> Comment atteindre 30 points
+          </h3>
+          <p style={{ margin: '0 0 0.85rem', fontSize: '0.88rem', color: 'var(--muted, #52645a)' }}>
+            Chaque preuve d&apos;activité validée rapporte des points. Atteignez 30 et votre compte
+            s&apos;active automatiquement, sans attendre la validation admin.
+          </p>
+          <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'grid', gap: '0.4rem' }}>
+            {[
+              ['Carte de membre coopérative', 25],
+              ['Attestation du chef de village', 20],
+              ['Historique de livraisons (3+ sur FresCoop)', 20],
+              ['Parrainage par 2 agriculteurs actifs', 15],
+              ['Mobile money — achats agricoles', 15],
+            ].map(([label, pts]) => (
+              <li key={label} style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', fontSize: '0.88rem', padding: '0.4rem 0', borderBottom: '1px solid var(--line, #edf6f1)' }}>
+                <span style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}><FileCheck2 size={15} /> {label}</span>
+                <strong style={{ color: 'var(--green-700, #1f835d)', whiteSpace: 'nowrap' }}>+{pts} pts</strong>
+              </li>
+            ))}
+          </ul>
+          <p style={{ margin: '0.75rem 0 0', fontSize: '0.82rem', color: 'var(--muted, #52645a)' }}>
+            Exemple : carte coopérative (25) + attestation chef (20) = 45 points → compte activé.
+          </p>
+          <div style={{ marginTop: '0.85rem' }}>
+            <Button variant="secondary" onClick={() => navigate('/verification')}>
+              <FileText size={17} /> Voir toutes les preuves et leur valeur
+            </Button>
+          </div>
+        </div>
+      )}
+
       <div className="pending-info-cards">
         {isFarmer && (
           <div className="pending-info-card">
@@ -7594,6 +7651,7 @@ function PendingApprovalPage({ user, logout, navigate, actions, notify, store })
         </div>
       </div>
       <div className="button-row centered" style={{ marginTop: '1.5rem' }}>
+        <Button variant="secondary" onClick={() => navigate('/public/agriscore')}><Sprout size={18} /> Retour à la démo AgriScore</Button>
         <Button variant="secondary" onClick={logout}><LogOut size={18} /> Se déconnecter</Button>
       </div>
     </div>
@@ -7758,8 +7816,14 @@ function PanelToolbar({ action, icon: Icon, title }) {
   return <div className="panel-toolbar"><PanelTitle icon={Icon} title={title} />{action}</div>;
 }
 
-function Field({ children, label, required }) {
-  return <label className="field"><span>{label}{required ? ' *' : ''}</span>{children}</label>;
+function Field({ children, label, required, error }) {
+  return (
+    <label className={`field${error ? ' field-has-error' : ''}`}>
+      <span>{label}{required ? ' *' : ''}</span>
+      {children}
+      {error ? <span className="field-error-text"><CircleAlert size={13} /> {error}</span> : null}
+    </label>
+  );
 }
 
 function ProductImagesUploader({ existingImages = [], newFiles = [], onAddFiles, onRemoveExisting, onRemoveNew, max = 6 }) {
@@ -10610,7 +10674,7 @@ function getCurrentRoute() {
 }
 
 function isPublicPath(path) {
-  return publicSitePaths.includes(path);
+  return publicSitePaths.includes(path) || agriScorePaths.includes(path);
 }
 
 function roleLabel(role) {

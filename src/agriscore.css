@@ -410,10 +410,91 @@
 }
 .ags-foot strong { color: var(--ags-green-850); }
 
+/* ---- Bouton ghost foncé (barre runner) ----------------------------------- */
+.ags-btn-ghost-dark {
+  background: var(--ags-green-100); color: var(--ags-green-850);
+  border-color: var(--ags-line);
+}
+.ags-btn-ghost-dark:hover { background: #d6efe2; }
+
+/* ---- Pédagogie : preuve -> point ----------------------------------------- */
+.ags-pedago { background: linear-gradient(160deg, #fff8e6, #fff); border-color: #f1d98a; }
+.ags-pedago-list { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 9px; }
+.ags-pedago-list li {
+  display: flex; gap: 9px; align-items: flex-start; font-size: 0.88rem; line-height: 1.45;
+}
+.ags-pedago-list li svg { flex-shrink: 0; margin-top: 2px; color: var(--ags-gold); }
+.ags-pedago-note {
+  margin-top: 12px; font-size: 0.84rem; font-weight: 600; color: var(--ags-green-850);
+}
+
+/* ---- Mode pas-à-pas (DemoRunner) ----------------------------------------- */
+.ags-runner .ags-shell { padding-bottom: 124px; }
+
+.ags-runner-head {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  gap: 16px; margin-top: 26px; flex-wrap: wrap;
+}
+.ags-runner-phrase {
+  margin-top: 6px; font-weight: 700; font-size: 1.05rem; color: var(--ags-green-850);
+  max-width: 52ch;
+}
+
+.ags-stepbar {
+  display: flex; gap: 8px; margin: 18px 0 22px; flex-wrap: wrap;
+}
+.ags-stepbar-item {
+  flex: 1; min-width: 130px;
+  display: flex; align-items: center; gap: 9px;
+  background: var(--ags-surface); border: 1.5px solid var(--ags-line);
+  border-radius: 12px; padding: 11px 14px; cursor: pointer;
+  font-weight: 700; font-size: 0.86rem; color: var(--ags-muted);
+  transition: all 0.15s;
+}
+.ags-stepbar-item:hover { border-color: var(--ags-green-500); }
+.ags-stepbar-item.is-active {
+  border-color: var(--ags-green-850); background: var(--ags-green-100);
+  color: var(--ags-green-850);
+}
+.ags-stepbar-item.is-done { color: var(--ags-green-700); }
+.ags-stepbar-num {
+  width: 26px; height: 26px; border-radius: 8px; flex-shrink: 0;
+  display: grid; place-items: center; font-size: 0.84rem;
+  background: var(--ags-paper); color: var(--ags-muted);
+}
+.ags-stepbar-item.is-active .ags-stepbar-num { background: var(--ags-green-850); color: #fff; }
+.ags-stepbar-item.is-done .ags-stepbar-num { background: var(--ags-green-100); color: var(--ags-green-700); }
+
+.ags-runner-screen { animation: ags-fade 0.4s cubic-bezier(0.22, 1, 0.36, 1); }
+.ags-runner-screen .ags-section { margin-top: 8px; }
+@keyframes ags-fade {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.ags-runner-bar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 50;
+  display: flex; align-items: center; justify-content: space-between; gap: 14px;
+  padding: 14px 24px;
+  background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(10px);
+  border-top: 1px solid var(--ags-line);
+  box-shadow: 0 -10px 30px rgba(7, 27, 20, 0.08);
+}
+.ags-runner-dots { display: flex; align-items: center; gap: 10px; }
+.ags-dot {
+  width: 11px; height: 11px; border-radius: 50%; cursor: pointer;
+  background: var(--ags-line); border: none; padding: 0; transition: all 0.15s;
+}
+.ags-dot:hover { background: var(--ags-green-500); }
+.ags-dot.is-active { background: var(--ags-gold); transform: scale(1.3); }
+.ags-runner-play { margin-left: 8px; padding: 8px 14px; }
+
 /* ---- Mode présentation --------------------------------------------------- */
 .ags-root.is-stage { font-size: 1.06rem; }
 .ags-root.is-stage .ags-gauge { width: 240px; height: 240px; }
 .ags-root.is-stage .ags-gauge-num { font-size: 4rem; }
+.ags-root.is-stage { background: var(--ags-paper); overflow-y: auto; }
+.ags-root.is-stage .ags-runner-head { margin-top: 30px; }
 
 /* ---- Responsive ---------------------------------------------------------- */
 @media (max-width: 920px) {
@@ -431,6 +512,11 @@
   .ags-nav-steps { display: none; }
   .ags-card { padding: 18px; }
   .ags-sim-compare { justify-content: center; }
+  .ags-runner-bar { padding: 10px 12px; gap: 8px; }
+  .ags-runner-bar .ags-btn { padding: 10px 12px; font-size: 0.84rem; }
+  .ags-runner-play { display: none; }
+  .ags-stepbar-item { min-width: 0; padding: 9px 10px; font-size: 0.78rem; }
+  .ags-runner .ags-shell { padding-bottom: 96px; }
 }
 
 @media print {
