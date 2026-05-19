@@ -30,6 +30,7 @@ yarn-error.log*
 pnpm-debug.log*
 
 # Editor and OS files
+.claude/
 .DS_Store
 Thumbs.db
 desktop.ini

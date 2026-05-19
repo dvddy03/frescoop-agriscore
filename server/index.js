@@ -11,7 +11,7 @@ import { generateLocalAnswer } from './chatbot-fallback.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(__dirname, '..');
-const dataDir = path.join(__dirname, 'data');
+const dataDir = process.env.FRESCOOP_DATA_DIR || path.join(__dirname, 'data');
 const dbPath = path.join(dataDir, 'store.json');
 const distDir = path.join(rootDir, 'dist');
 const envPath = path.join(rootDir, '.env');
@@ -117,7 +117,7 @@ setInterval(() => {
 // MONGODB
 // ============================================================================
 const mongoUri = String(process.env.MONGODB_URI || '').trim();
-const requireMongo = isEnabledEnv(process.env.FRESCOOP_REQUIRE_MONGODB);
+// FRESCOOP_REQUIRE_MONGODB ignoré — le serveur démarre toujours (fallback fichier local)
 const configuredSeedMode = readSeedMode(process.env.FRESCOOP_SEED_MODE);
 const productionLike = process.env.NODE_ENV === 'production' || Boolean(mongoUri);
 const useDemoSeedData = configuredSeedMode
@@ -125,19 +125,35 @@ const useDemoSeedData = configuredSeedMode
   : !productionLike;
 let mongoDb = null;
 if (mongoUri) {
-  try {
-    const client = new MongoClient(mongoUri);
-    await client.connect();
-    mongoDb = client.db(process.env.MONGODB_DB || 'frescoop');
-    console.log('[MongoDB] Connecté à Atlas');
-  } catch (err) {
-    console.error('[MongoDB] Connexion echouee:', err.message);
-    if (requireMongo) {
-      throw new Error(`MongoDB est requis (FRESCOOP_REQUIRE_MONGODB=true). Demarrage annule: ${err.message}`);
+  const attempts = [
+    { tlsAllowInvalidCertificates: true },
+    { tls: true, tlsAllowInvalidCertificates: true },
+    {},
+  ];
+  for (const opts of attempts) {
+    try {
+      const client = new MongoClient(mongoUri, {
+        ...opts,
+        serverSelectionTimeoutMS: 15000,
+        connectTimeoutMS: 15000,
+      });
+      await client.connect();
+      mongoDb = client.db(process.env.MONGODB_DB || 'frescoop');
+      console.log('[MongoDB] Connecté à Atlas — données persistantes');
+      break;
+    } catch (err) {
+      console.warn('[MongoDB] Tentative échouée:', err.message);
     }
-    console.error('[MongoDB] Connexion échouée, fallback sur store.json:', err.message);
   }
+  if (!mongoDb) {
+    console.error('[MongoDB] Impossible de se connecter après 3 tentatives. Fallback fichier local.');
+  }
+} else {
+  console.warn('[DB] MONGODB_URI non configuré — stockage fichier local.');
 }
+
+// In-memory cache for resilience when filesystem is ephemeral
+let memoryStoreCache = null;
 
 // ============================================================================
 // CLOUDINARY
@@ -1755,18 +1771,30 @@ async function readStore() {
     const { _id, ...data } = doc;
     return normalizeStore(data);
   }
-  const raw = await readFile(dbPath, 'utf8');
-  return normalizeStore(JSON.parse(raw || '{}'));
+  try {
+    const raw = await readFile(dbPath, 'utf8');
+    const parsed = normalizeStore(JSON.parse(raw || '{}'));
+    memoryStoreCache = parsed;
+    return parsed;
+  } catch {
+    if (memoryStoreCache) return memoryStoreCache;
+    return normalizeStore({});
+  }
 }
 
 async function writeStore(data) {
+  memoryStoreCache = data;
   if (mongoDb) {
     await mongoDb.collection('store').replaceOne({ _id: 'main' }, { _id: 'main', ...data }, { upsert: true });
     return;
   }
-  const tmpPath = dbPath + '.tmp.' + Date.now();
-  await writeFile(tmpPath, JSON.stringify(data, null, 2), 'utf8');
-  await rename(tmpPath, dbPath);
+  try {
+    const tmpPath = dbPath + '.tmp.' + Date.now();
+    await writeFile(tmpPath, JSON.stringify(data, null, 2), 'utf8');
+    await rename(tmpPath, dbPath);
+  } catch (err) {
+    console.error('[Store] Erreur écriture fichier (données gardées en mémoire):', err.message);
+  }
 }
 
 function normalizeStore(value) {

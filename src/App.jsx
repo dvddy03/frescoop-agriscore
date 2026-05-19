@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import AgriScoreDemoPage from './AgriScoreDemoPage.jsx';
 import {
   Activity,
   ArrowRight,
@@ -248,18 +249,18 @@ const basePageMeta = {
     image: publicImages.products,
     kicker: 'Produits vendeurs',
     title: 'Agriculteurs et commerçants publient leurs produits réels.',
-    body: 'Chaque article appartient a un compte vendeur et peut etre commande ou contacte par un client.',
+    body: 'Chaque article appartient à un compte vendeur et peut être commande ou contacté par un client.',
   },
   '/dossiers': {
     image: publicImages.dossiers,
     kicker: 'Dossiers et preuves',
-    title: 'Soumettre les dossiers des personnes concernees avec pieces justificatives.',
+    title: 'Soumettre les dossiers des personnes concernées avec pieces justificatives.',
     body: 'Les attestations sont possibles si le dossier contient assez de preuves ou apres validation admin.',
   },
   '/attestations': {
     image: publicImages.attestations,
     kicker: 'Attestations serieuses',
-    title: 'Generer des attestations avec code, score de preuve et dossier source.',
+    title: 'Générer des attestations avec code, score de preuve et dossier source.',
     body: 'Un utilisateur sans ancienne attestation peut obtenir un certificat si ses preuves sont suffisantes.',
   },
   '/preuves': {
@@ -283,14 +284,14 @@ const basePageMeta = {
   '/operations': {
     image: publicImages.operations,
     kicker: 'Operations terrain',
-    title: 'Administrer hubs, logistique, capacite et froid.',
-    body: 'Admin et transporteurs suivent les sites operationnels avec stock, temperature et responsable.',
+    title: 'Administrer hubs, logistique, capacité et froid.',
+    body: 'Admin et transporteurs suivent les sites opérationnels avec stock, temperature et responsable.',
   },
   '/lots': {
     image: publicImages.operations,
     kicker: 'Lots froids intelligents',
     title: 'Suivre le jumeau numerique du lot, du depot au paiement partenaire.',
-    body: 'QR, pesee, photos qualite, capteurs, duree de vie commerciale, debouche recommande et preuve économique explicable.',
+    body: 'QR, pesee, photos qualité, capteurs, durée de vie commerciale, debouche recommande et preuve économique explicable.',
   },
   '/utilisateurs': {
     image: publicImages.admin,
@@ -313,14 +314,14 @@ const basePageMeta = {
   '/ussd': {
     image: publicImages.operations,
     kicker: 'USSD · inclusion digitale',
-    title: 'Acceder a FresCoop depuis un simple telephone a touches.',
+    title: 'Accéder a FresCoop depuis un simple téléphone a touches.',
     body: '*384*FRES# pour les 70% de producteurs sans smartphone. Cours du jour, stock, ventes et paiements en wolof/pular.',
   },
   '/donnees': {
     image: publicImages.data,
     kicker: 'Base applicative',
     title: 'Exporter, importer et synchroniser les données de production.',
-    body: 'Les données sont centralisables via API locale et exportables pour migration vers une base de données.',
+    body: 'Les données sont centralisables via API localé et exportables pour migration vers une base de données.',
   },
   '/compte': {
     image: publicImages.account,
@@ -334,20 +335,20 @@ const roleHomeMeta = {
   admin: {
     image: publicImages.impact,
     kicker: 'Accueil admin',
-    title: 'Piloter les revenus, la confiance et les opportunites FresCoop.',
+    title: 'Piloter les revenus, la confiance et les opportunités FresCoop.',
     body: 'Un centre de décision pour convertir les commandes, activer les vendeurs, suivre la valeur du marché et produire un rapport filières UEMOA défendable.',
   },
   agriculteur: {
     image: publicImages.agriculture,
-    kicker: 'Accueil agriculteur',
-    title: 'Vendre plus, prouver ses revenus et devenir financable.',
-    body: 'Un espace vendeur qui transforme stock, commandes, messages clients et preuves en opportunites commerciales concretes.',
+    kicker: "Accueil agriculteur",
+    title: 'Vendre plus, prouver ses revenus et devenir finançable.',
+    body: 'Un espace vendeur qui transforme stock, commandes, messages clients et preuves en opportunités commerciales concrètes.',
   },
   agentTerrain: {
     image: publicImages.operations,
     kicker: 'Accueil agent terrain',
-    title: 'Confirmer les commandes meme quand l agriculteur n est pas connecte.',
-    body: 'Un espace de coordination pour appeler l agriculteur, verifier le stock, contacter le transporteur et organiser la livraison.',
+    title: "Confirmer les commandes même quand l'agriculteur n'est pas connecté.",
+    body: "Un espace de coordination pour appeler l'agriculteur, vérifier le stock, contacter le transporteur et organiser la livraison.",
   },
   client: {
     image: publicImages.market,
@@ -359,7 +360,7 @@ const roleHomeMeta = {
     image: publicImages.market,
     kicker: 'Accueil acheteur B2B',
     title: 'Réserver des lots fiables et relancer les achats rentables.',
-    body: 'Un catalogue de lots disponibles avec qualite, volume, localisation, fenetre de consommation et re-achat en un clic.',
+    body: 'Un catalogue de lots disponibles avec qualité, volume, localisation, fenêtre de consommation et re-achat en un clic.',
   },
   partenaire: {
     image: publicImages.proofs,
@@ -390,11 +391,11 @@ const marketPriceReferences = [
   { key: 'tomate', label: 'Tomate', price: 260, unit: 'kg', source: 'Reference marche Thies' },
   { key: 'mangue', label: 'Mangue', price: 500, unit: 'kg', source: 'Reference marche Casamance' },
 ];
-const evidenceTypes = ['Piece identite', 'Registre coopérative', 'Photo activite', 'Facture', 'Recu paiement', 'Contrat', 'Autre preuve'];
+const evidenceTypes = ['Piece identité', 'Registre coopérative', 'Photo activité', 'Facture', 'Recu paiement', 'Contrat', 'Autre preuve'];
 const chartColors = ['#1f835d', '#258399', '#e54d35', '#d99912', '#74526f'];
 
 const imageStories = [
-  { image: publicImages.agriculture, title: 'Agriculture', body: 'Recoltes, coopératives et preuves terrain.' },
+  { image: publicImages.agriculture, title: 'Agriculture', body: 'Récoltes, coopératives et preuves terrain.' },
   { image: publicImages.commerce, title: 'Commerce', body: 'Catalogue, commandes et relation client.' },
   { image: publicImages.logistics, title: 'Logistique', body: 'Hubs, transport, stockage et froid.' },
   { image: publicImages.dossiers, title: 'Dossiers', body: 'Pieces justificatives et validation documentaire.' },
@@ -487,6 +488,17 @@ function App() {
     return (
       <>
         <VerifyReceiptPage navigate={navigate} route={route} store={store} />
+        {toast && <Toast toast={toast} />}
+      </>
+    );
+  }
+
+  // Démo hackathon « AgriScore by FresCoop » — parcours public autonome,
+  // accessible sans authentification et sans dépendance backend.
+  if (route.pathname === '/agriscore' || route.pathname === '/demo-agriscore' || route.pathname === '/bancabilite-demo') {
+    return (
+      <>
+        <AgriScoreDemoPage navigate={navigate} />
         {toast && <Toast toast={toast} />}
       </>
     );
@@ -699,7 +711,7 @@ function PublicSitePage({ navigate, path }) {
 
   const navItems = [
     ['accueil', 'Accueil'],
-    ['probleme', 'Le problème'],
+    ['problème', 'Le problème'],
     ['solution', 'La solution'],
     ['comment', 'Comment ça marche'],
     ['impact', 'Impact'],
@@ -737,6 +749,7 @@ function PublicSitePage({ navigate, path }) {
           <span>Menu</span>
         </button>
         <div className="public-nav-auth">
+          <Button variant="secondary" onClick={() => navigate('/agriscore')}><Sprout size={17} /> AgriScore</Button>
           <Button variant="secondary" onClick={() => navigate('/sondage')}><FileText size={17} /> Questionnaire</Button>
           <Button variant="secondary" onClick={() => navigate('/login')}><LockKeyhole size={17} /> Se connecter</Button>
           <Button onClick={() => navigate('/login')}><UserCheck size={17} /> S'inscrire</Button>
@@ -747,6 +760,7 @@ function PublicSitePage({ navigate, path }) {
               {navItems.map(([id, label]) => <button key={id} type="button" onClick={() => scrollTo(id)}>{label}</button>)}
             </div>
             <div className="public-nav-mobile-auth">
+              <Button variant="secondary" onClick={() => navigate('/agriscore')}><Sprout size={17} /> Démo AgriScore</Button>
               <Button variant="secondary" onClick={() => navigate('/sondage')}><FileText size={17} /> Questionnaire</Button>
               <Button variant="secondary" onClick={() => navigate('/login')}><LockKeyhole size={17} /> Se connecter</Button>
               <Button onClick={() => navigate('/login')}><UserCheck size={17} /> S'inscrire</Button>
@@ -761,13 +775,14 @@ function PublicSitePage({ navigate, path }) {
           <h1>80% des agriculteurs UEMOA sont exclus du crédit. FresCoop change ça.</h1>
           <p>Nous transformons l'activité agricole informelle en dossier bancaire vérifiable et score de crédit exploitable — sans changer les habitudes de l'agriculteur.</p>
           <div className="button-row">
-            <Button onClick={() => navigate('/login')}><UserCheck size={18} /> S'inscrire gratuitement</Button>
+            <Button onClick={() => navigate('/agriscore')}><Sprout size={18} /> Démo jury — AgriScore</Button>
+            <Button variant="secondary" onClick={() => navigate('/login')}><UserCheck size={18} /> S'inscrire gratuitement</Button>
             <Button variant="secondary" onClick={() => scrollTo('comment')}><ArrowRight size={18} /> Comment ça marche</Button>
           </div>
         </div>
       </section>
 
-      <section id="probleme" className="public-band">
+      <section id="problème" className="public-band">
         <div>
           <span className="eyebrow">Le problème</span>
           <h2>Les agriculteurs sont invisibles pour le système financier.</h2>
@@ -959,9 +974,9 @@ function PublicSurveyPage({ actions, navigate, notify, store }) {
   const needOptions = [
     { label: 'Vendre mes produits', icon: Store, desc: 'Publier et vendre sur le marche FresCoop' },
     { label: 'Acheter en gros', icon: ShoppingCart, desc: 'Sourcing B2B direct producteurs' },
-    { label: 'Suivre une commande', icon: ClipboardCheck, desc: 'Tracabilite champ-a-client' },
-    { label: 'Reduire les pertes', icon: Leaf, desc: 'Alertes DLC et ventes eclair' },
-    { label: 'Obtenir un financement', icon: Landmark, desc: 'Score bancabilite et dossier credit' },
+    { label: 'Suivre une commande', icon: ClipboardCheck, desc: 'Traçabilité champ-a-client' },
+    { label: 'Reduire les pertes', icon: Leaf, desc: 'Alertes DLC et ventes éclair' },
+    { label: 'Obtenir un financement', icon: Landmark, desc: 'Score bancabilité et dossier credit' },
     { label: 'Transporter ou stocker', icon: Truck, desc: 'Hubs froids et livraison' },
   ];
 
@@ -979,7 +994,7 @@ function PublicSurveyPage({ actions, navigate, notify, store }) {
   function nextStep() {
     if (step === 0) {
       if (!form.fullName.trim() || !form.phone.trim() || !form.roleInterest) {
-        notify('Nom, telephone et profil sont obligatoires', 'error');
+        notify('Nom, téléphone et profil sont obligatoires', 'error');
         return;
       }
     }
@@ -991,12 +1006,12 @@ function PublicSurveyPage({ actions, navigate, notify, store }) {
     const fullName = form.fullName.trim();
     const phone = form.phone.trim();
     if (!fullName || !phone || !form.roleInterest) {
-      notify('Nom, telephone et profil sont obligatoires', 'error');
+      notify('Nom, téléphone et profil sont obligatoires', 'error');
       setStep(0);
       return;
     }
     if (!form.consent) {
-      notify('Le consentement est requis pour etre recontacte', 'error');
+      notify('Le consentement est requis pour être recontacte', 'error');
       return;
     }
 
@@ -1023,7 +1038,7 @@ function PublicSurveyPage({ actions, navigate, notify, store }) {
     actions.setSurveyLeads((items) => [lead, ...items]);
     actions.setNotifications((items) => [
       createAppNotification({
-        body: `${lead.fullName} (${roleLabel(lead.roleInterest)}) veut etre recontacte: ${lead.phone}`,
+        body: `${lead.fullName} (${roleLabel(lead.roleInterest)}) veut être recontacte: ${lead.phone}`,
         path: '/utilisateurs',
         recipientRole: 'admin',
         relatedId: lead.id,
@@ -1048,7 +1063,7 @@ function PublicSurveyPage({ actions, navigate, notify, store }) {
       notes: '',
       consent: false,
     });
-    notify('Merci, votre questionnaire est enregistre.', 'success');
+    notify('Merci, votre questionnaire est enregistré.', 'success');
   }
 
   const respondentCount = (store.surveyLeads || []).length;
@@ -1084,7 +1099,7 @@ function PublicSurveyPage({ actions, navigate, notify, store }) {
             <p>Merci pour votre intérêt. L'équipe FresCoop vous recontactera sous 24 à 48h via le canal que vous avez indiqué.</p>
             <div className="survey-success-steps">
               <div className="survey-success-step"><span>1</span><strong>Reponse recue</strong></div>
-              <div className="survey-success-step"><span>2</span><strong>Equipe vous contacte</strong></div>
+              <div className="survey-success-step"><span>2</span><strong>Équipe vous contacte</strong></div>
               <div className="survey-success-step"><span>3</span><strong>Compte active</strong></div>
             </div>
             <div className="button-row centered">
@@ -1117,7 +1132,7 @@ function PublicSurveyPage({ actions, navigate, notify, store }) {
                   <Field label="Nom complet" required>
                     <input value={form.fullName} onChange={(event) => updateForm(setForm, 'fullName', event.target.value)} placeholder="Prenom Nom" />
                   </Field>
-                  <Field label="Telephone / WhatsApp" required>
+                  <Field label="Téléphone / WhatsApp" required>
                     <input value={form.phone} onChange={(event) => updateForm(setForm, 'phone', event.target.value)} placeholder="+221 77 000 00 00" />
                   </Field>
                   <Field label="Email">
@@ -1151,7 +1166,7 @@ function PublicSurveyPage({ actions, navigate, notify, store }) {
                   </Field>
                 </div>
                 <div className="button-row">
-                  <Button type="button" onClick={nextStep}><ArrowRight size={18} /> Etape suivante</Button>
+                  <Button type="button" onClick={nextStep}><ArrowRight size={18} /> Etapé suivante</Button>
                 </div>
               </div>
             )}
@@ -1160,7 +1175,7 @@ function PublicSurveyPage({ actions, navigate, notify, store }) {
               <div className="survey-section">
                 <div className="survey-section-header">
                   <PackageCheck size={20} />
-                  <div><strong>Votre activite</strong><span>Decrivez ce que vous produisez, vendez ou recherchez.</span></div>
+                  <div><strong>Votre activité</strong><span>Decrivez ce que vous produisez, vendez ou recherchez.</span></div>
                 </div>
                 <Field label="Produits ou besoins principaux">
                   <textarea rows={3} value={form.products} onChange={(event) => updateForm(setForm, 'products', event.target.value)} placeholder="Ex: oignon, tomate, riz local, transport froid, achats en gros..." />
@@ -1184,7 +1199,7 @@ function PublicSurveyPage({ actions, navigate, notify, store }) {
                 </div>
                 <div className="button-row">
                   <Button type="button" variant="secondary" onClick={() => setStep(0)}><ChevronLeft size={18} /> Retour</Button>
-                  <Button type="button" onClick={nextStep}><ArrowRight size={18} /> Etape suivante</Button>
+                  <Button type="button" onClick={nextStep}><ArrowRight size={18} /> Etapé suivante</Button>
                 </div>
               </div>
             )}
@@ -1193,7 +1208,7 @@ function PublicSurveyPage({ actions, navigate, notify, store }) {
               <div className="survey-section">
                 <div className="survey-section-header">
                   <Settings size={20} />
-                  <div><strong>Preferences et validation</strong><span>Derniere etape avant l'envoi de votre questionnaire.</span></div>
+                  <div><strong>Preferences et validation</strong><span>Derniere etapé avant l'envoi de votre questionnaire.</span></div>
                 </div>
                 <div className="survey-form-grid compact">
                   <Field label="Smartphone / Internet">
@@ -1220,11 +1235,11 @@ function PublicSurveyPage({ actions, navigate, notify, store }) {
                   </Field>
                 </div>
                 <Field label="Message libre">
-                  <textarea rows={3} value={form.notes} onChange={(event) => updateForm(setForm, 'notes', event.target.value)} placeholder="Expliquez votre activite, vos volumes ou vos difficultes actuelles." />
+                  <textarea rows={3} value={form.notes} onChange={(event) => updateForm(setForm, 'notes', event.target.value)} placeholder="Expliquez votre activité, vos volumes ou vos difficultes actuelles." />
                 </Field>
                 <label className="survey-consent">
                   <input type="checkbox" checked={form.consent} onChange={(event) => updateForm(setForm, 'consent', event.target.checked)} />
-                  <span>J'accepte d'etre recontacte par FresCoop pour l'inscription au pilote.</span>
+                  <span>J'accepte d'être recontacté par FresCoop pour l'inscription au pilote.</span>
                 </label>
                 <div className="button-row">
                   <Button type="button" variant="secondary" onClick={() => setStep(1)}><ChevronLeft size={18} /> Retour</Button>
@@ -1248,7 +1263,7 @@ function PublicSurveyPage({ actions, navigate, notify, store }) {
                 </article>
                 <article>
                   <span className="survey-why-num">3</span>
-                  <div><strong>Preparer l'inscription</strong><p>L'equipe peut creer ou valider les comptes plus vite.</p></div>
+                  <div><strong>Préparer l'inscription</strong><p>L'équipe peut créer ou valider les comptes plus vite.</p></div>
                 </article>
               </div>
             </div>
@@ -1530,7 +1545,7 @@ function Header({ actions, activePath, currentUser, logout, menuLinks, messages 
                 <div className="notification-head">
                   <div>
                     <strong>Notifications</strong>
-                    <span>{unreadCount ? `${unreadCount} non lue(s)` : 'Tout est a jour'}</span>
+                    <span>{unreadCount ? `${unreadCount} non lue(s)` : 'Tout est à jour'}</span>
                   </div>
                   <div className="notification-actions">
                     {unreadCount > 0 && <button type="button" onClick={markAllRead}>Tout lire</button>}
@@ -1666,8 +1681,8 @@ function FieldAgentHomePage({ currentUser, navigate, store }) {
       <section className="role-home-panel transport-home-panel">
         <div>
           <span className="eyebrow">Agent Terrain</span>
-          <h2>Coordonner les commandes quand l agriculteur n est pas connecte.</h2>
-          <p>Votre role est d appeler l agriculteur, confirmer le stock, contacter le transporteur et garder la commande reactive jusqu a livraison.</p>
+          <h2>Coordonner les commandes quand l'agriculteur n'est pas connecté.</h2>
+          <p>Votre rôle est d'appeler l'agriculteur, confirmer le stock, contacter le transporteur et garder la commande réactive jusqu'à livraison.</p>
           <div className="button-row">
             <Button onClick={() => navigate('/commandes')}><PhoneCall size={18} /> Voir commandes terrain</Button>
             <Button variant="secondary" onClick={() => navigate('/operations')}><Truck size={18} /> Transporteurs et hubs</Button>
@@ -1675,20 +1690,20 @@ function FieldAgentHomePage({ currentUser, navigate, store }) {
         </div>
         <div className="home-highlight">
           <strong>{formatNumber(toCoordinate.length)}</strong>
-          <span>commandes a suivre</span>
+          <span>commandes à suivre</span>
         </div>
       </section>
       <div className="status-grid">
-        <StatCard icon={CheckCircle2} label="Payees a preparer" value={paidToPrepare.length} tone="green" />
+        <StatCard icon={CheckCircle2} label="Payees à préparer" value={paidToPrepare.length} tone="green" />
         <StatCard icon={PhoneCall} label="Agriculteurs a appeler" value={toCoordinate.filter((order) => !order.agentWorkflow?.farmerCalledAt).length} tone="blue" />
-        <StatCard icon={Truck} label="Livraisons organisees" value={organized} tone="gold" />
+        <StatCard icon={Truck} label="Livraisons organisées" value={organized} tone="gold" />
         <StatCard icon={CircleAlert} label="En attente paiement" value={orders.filter((order) => order.status === 'Paiement en attente').length} tone="coral" />
       </div>
       <div className="quick-grid">
         <QuickAction icon={Users} title="Former les acteurs" body="Accompagner agriculteurs et transporteurs sur les parcours FresCoop et USSD." onClick={() => navigate('/ussd')} />
-        <QuickAction icon={ShieldCheck} title="Verifier les produits" body="Confirmer la disponibilite, la zone, la qualite annoncee et la coherence terrain." onClick={() => navigate('/produits')} />
-        <QuickAction icon={PhoneCall} title="Coordonner commandes" body="Appeler l agriculteur, contacter le transporteur et confirmer la preparation." onClick={() => navigate('/commandes')} />
-        <QuickAction icon={ClipboardCheck} title="Surveys terrain" body="Questionnaires et releves terrain prevus dans une prochaine iteration." onClick={() => navigate('/operations')} />
+        <QuickAction icon={ShieldCheck} title="Vérifier les produits" body="Confirmer la disponibilité, la zone, la qualité annoncée et la coherence terrain." onClick={() => navigate('/produits')} />
+        <QuickAction icon={PhoneCall} title="Coordonner commandes" body="Appeler l'agriculteur, contacter le transporteur et confirmer la preparation." onClick={() => navigate('/commandes')} />
+        <QuickAction icon={ClipboardCheck} title="Surveys terrain" body="Questionnaires et relevés terrain prévus dans une prochaine iteration." onClick={() => navigate('/operations')} />
       </div>
     </PageFrame>
   );
@@ -1715,8 +1730,8 @@ function FrescoopRoleHomePage({ currentUser, navigate, store }) {
         <section className="role-home-panel bancabilite-hero">
           <div>
             <span className="eyebrow">Partenaire financier</span>
-            <h2>Consultez les dossiers bancaires verifies des agriculteurs.</h2>
-            <p>FresCoop genere des scores de bancabilite bases sur des donnees reelles de production, vente et livraison. Chaque dossier est verifiable par QR code et portable.</p>
+            <h2>Consultez les dossiers bancaires vérifiés des agriculteurs.</h2>
+            <p>FresCoop genere des scores de bancabilité bases sur des données reelles de production, vente et livraison. Chaque dossier est verifiable par QR code et portable.</p>
             <div className="button-row">
               <Button onClick={() => navigate('/bancabilite')}><Landmark size={18} /> Dossiers bancables</Button>
               <Button variant="secondary" onClick={() => navigate('/impact')}><BarChart3 size={18} /> Indicateurs</Button>
@@ -1731,7 +1746,7 @@ function FrescoopRoleHomePage({ currentUser, navigate, store }) {
           <StatCard icon={Landmark} label="Bancables (75+)" value={bancables.length} tone="green" />
           <StatCard icon={Users} label="Agriculteurs suivis" value={agriculteurs.length} tone="blue" />
           <StatCard icon={ShieldCheck} label="Consentements actifs" value={consentActifs} tone="gold" />
-          <StatCard icon={FileCheck2} label="Preuves economiques" value={store.proofs.length} tone="coral" />
+          <StatCard icon={FileCheck2} label="Preuves économiques" value={store.proofs.length} tone="coral" />
         </div>
         {bancables.length > 0 && (
           <section className="panel">
@@ -1758,13 +1773,13 @@ function FrescoopRoleHomePage({ currentUser, navigate, store }) {
     acheteurB2B: {
       icon: Store,
       title: 'Catalogue B2B fiable et re-achat',
-      body: 'Identifiez les lots disponibles, la fenetre de consommation et les reservations recurrentes.',
+      body: 'Identifiez les lots disponibles, la fenêtre de consommation et les reservations recurrentes.',
       cta: 'Voir catalogue lots',
     },
   }[currentUser.role] || {
     icon: ClipboardCheck,
     title: 'Espace FresCoop',
-    body: 'Pilotez lots, froid, commandes et preuves economiques.',
+    body: 'Pilotez lots, froid, commandes et preuves économiques.',
     cta: 'Voir les lots',
   };
   const Icon = roleCopy.icon;
@@ -1789,7 +1804,7 @@ function FrescoopRoleHomePage({ currentUser, navigate, store }) {
       <div className="status-grid">
         <StatCard icon={ClipboardCheck} label="Lots actifs" value={data.lots.length} tone="green" />
         <StatCard icon={Warehouse} label="Kg proteges" value={formatNumber(sumBy(data.lots, 'weightKg'))} tone="blue" />
-        <StatCard icon={CircleDollarSign} label="Valeur reservee" value={formatMoney(sumBy(data.reservations, 'value'))} tone="gold" />
+        <StatCard icon={CircleDollarSign} label="Valeur réservée" value={formatMoney(sumBy(data.reservations, 'value'))} tone="gold" />
         <StatCard icon={ShieldCheck} label="Consentements" value={data.consentRecords.filter((item) => item.status === 'Actif').length} tone="coral" />
       </div>
     </PageFrame>
@@ -1813,7 +1828,7 @@ function AdminHomePage({ navigate, stats, store }) {
   });
   const bancables = scoredFarmers.filter((f) => f.score >= 75).length;
   const enProgression = scoredFarmers.filter((f) => f.score >= 40 && f.score < 75).length;
-  const debutants = scoredFarmers.filter((f) => f.score < 40).length;
+  const débutants = scoredFarmers.filter((f) => f.score < 40).length;
   const avgScore = agriculteurs.length ? Math.round(scoredFarmers.reduce((s, f) => s + f.score, 0) / agriculteurs.length) : 0;
 
   return (
@@ -1822,9 +1837,9 @@ function AdminHomePage({ navigate, stats, store }) {
         <div>
           <span className="eyebrow">Pipeline Financement Agricole</span>
           <h2>Rendre les agriculteurs bancables : le coeur de FresCoop.</h2>
-          <p>Suivez combien de producteurs atteignent un score suffisant pour acceder au credit. Chaque vente, preuve et livraison les rapproche du financement.</p>
+          <p>Suivez combien de producteurs atteignent un score suffisant pour accéder au credit. Chaque vente, preuve et livraison les rapproche du financement.</p>
           <div className="button-row">
-            <Button onClick={() => navigate('/bancabilite')}><Landmark size={18} /> Vue bancabilite</Button>
+            <Button onClick={() => navigate('/bancabilite')}><Landmark size={18} /> Vue bancabilité</Button>
             <Button variant="secondary" onClick={() => navigate('/impact')}><BarChart3 size={18} /> Impact</Button>
             <Button variant="secondary" onClick={() => downloadHtml('rapport-uemoa-frescoop.html', renderBusinessReportHtml(store))}><Download size={18} /> Rapport UEMOA</Button>
             <Button variant="secondary" onClick={() => navigate('/donnees')}><Database size={18} /> Export</Button>
@@ -1838,9 +1853,9 @@ function AdminHomePage({ navigate, stats, store }) {
       </section>
 
       <div className="money-kpi-grid">
-        <MoneyKpi icon={Landmark} label="Bancables (75+)" value={bancables} detail="prets pour une demande de credit" />
+        <MoneyKpi icon={Landmark} label="Bancables (75+)" value={bancables} detail="prêts pour une demande de credit" />
         <MoneyKpi icon={Activity} label="En progression (40-74)" value={enProgression} detail="accumulent ventes et preuves" />
-        <MoneyKpi icon={Users} label="Debutants (0-39)" value={debutants} detail="a accompagner vers le scoring" />
+        <MoneyKpi icon={Users} label="Débutants (0-39)" value={débutants} detail="a accompagner vers le scoring" />
         <MoneyKpi icon={CircleDollarSign} label="Valeur marche" value={formatMoney(revenue.catalogValue)} detail={`${stats.products} produit(s)`} />
       </div>
 
@@ -1875,7 +1890,7 @@ function AdminHomePage({ navigate, stats, store }) {
                     <strong>{seller.user.name}</strong>
                     <span>{roleLabel(seller.user.role)} - {seller.products.length} produit(s)</span>
                   </div>
-                  <Meter label="Score bancabilite" value={seller.score} tone={seller.score >= 70 ? 'green' : 'blue'} />
+                  <Meter label="Score bancabilité" value={seller.score} tone={seller.score >= 70 ? 'green' : 'blue'} />
                   <small>{seller.recommendation}</small>
                 </article>
               ))}
@@ -1893,9 +1908,9 @@ function AdminHomePage({ navigate, stats, store }) {
             <article><strong>{pipeline.total}</strong><span>Dossiers deposes</span></article>
             <article><strong>{pipeline.validated}</strong><span>Validables</span></article>
             <article><strong>{pipeline.pending}</strong><span>A traiter</span></article>
-            <article><strong>{store.proofs.length}</strong><span>Preuves economiques</span></article>
+            <article><strong>{store.proofs.length}</strong><span>Preuves économiques</span></article>
           </div>
-          <NoticeCard icon={Landmark} title="Point 4 GIM-UEMOA" body="Plateforme de scoring basee sur les donnees de production reelles pour susciter la confiance des institutions financieres." />
+          <NoticeCard icon={Landmark} title="Point 4 GIM-UEMOA" body="Plateforme de scoring basee sur les données de production reelles pour susciter la confiance des institutions financieres." />
         </section>
 
         <section className="panel">
@@ -1911,14 +1926,14 @@ function AdminHomePage({ navigate, stats, store }) {
                     <span>{index + 1}</span>
                     <div>
                       <strong>{item.farmer.name}</strong>
-                      <small>{item.score >= 75 ? 'Bancable' : item.score >= 40 ? 'En progression' : 'Debutant'}</small>
+                      <small>{item.score >= 75 ? 'Bancable' : item.score >= 40 ? 'En progression' : 'Débutant'}</small>
                     </div>
                     <b>{item.score}/100</b>
                   </article>
                 ))}
             </div>
           ) : (
-            <EmptyState icon={Users} title="Aucun agriculteur" body="Le scoring demarre des la premiere vente." />
+            <EmptyState icon={Users} title="Aucun agriculteur" body="Le scoring démarré des la première vente." />
           )}
         </section>
       </div>
@@ -1943,7 +1958,7 @@ function SellerHomePage({ currentUser, navigate, store }) {
     Math.min(25, transactions.length * 8) +
     Math.min(15, dossiers.filter((item) => item.status === 'Valide').length * 15)
   );
-  const scoreLevel = bancabiliteScore >= 75 ? 'Bancable' : bancabiliteScore >= 40 ? 'En progression' : 'Debutant';
+  const scoreLevel = bancabiliteScore >= 75 ? 'Bancable' : bancabiliteScore >= 40 ? 'En progression' : 'Débutant';
   const scoreTone = bancabiliteScore >= 75 ? 'green' : bancabiliteScore >= 40 ? 'blue' : 'gold';
 
   return (
@@ -1952,7 +1967,7 @@ function SellerHomePage({ currentUser, navigate, store }) {
         <div>
           <span className="eyebrow">Mon parcours vers le financement</span>
           <h2>Chaque vente et chaque preuve vous rapprochent du credit.</h2>
-          <p>Vendez, livrez, accumulez des preuves : FresCoop transforme votre activite reelle en score de bancabilite reconnu par les banques et SFD de la zone UEMOA.</p>
+          <p>Vendez, livrez, accumulez des preuves : FresCoop transforme votre activité reelle en score de bancabilité reconnu par les banques et SFD de la zone UEMOA.</p>
           <div className="button-row">
             <Button onClick={() => navigate('/bancabilite')}><Landmark size={18} /> Mon score et dossier</Button>
             <Button variant="secondary" onClick={() => navigate('/produits')}><Plus size={18} /> Ajouter produit</Button>
@@ -1960,14 +1975,14 @@ function SellerHomePage({ currentUser, navigate, store }) {
           </div>
         </div>
         <div className="money-hero-score bancabilite-ring">
-          <span>Score de bancabilite</span>
+          <span>Score de bancabilité</span>
           <strong className={`score-${scoreTone}`}>{bancabiliteScore}</strong>
           <small>{scoreLevel}</small>
         </div>
       </section>
 
       <div className="money-kpi-grid">
-        <MoneyKpi icon={Landmark} label="Bancabilite" value={`${bancabiliteScore}/100`} detail={scoreLevel} />
+        <MoneyKpi icon={Landmark} label="Bancabilité" value={`${bancabiliteScore}/100`} detail={scoreLevel} />
         <MoneyKpi icon={CircleDollarSign} label="Ventes prouvees" value={formatMoney(orderValue)} detail={`${orders.length} commande(s) tracees`} />
         <MoneyKpi icon={Store} label="Produits actifs" value={`${publishedProducts.length}/${products.length}`} detail="visibles sur le marche" />
         <MoneyKpi icon={FileCheck2} label="Preuves au dossier" value={transactions.length + dossiers.length} detail="justificatifs exploitables" />
@@ -1990,7 +2005,7 @@ function SellerHomePage({ currentUser, navigate, store }) {
               ))}
             </div>
           ) : (
-            <EmptyState icon={CheckCircle2} title="Parcours bien avance" body="Continuez a vendre et soumettre des preuves pour atteindre 75/100." />
+            <EmptyState icon={CheckCircle2} title="Parcours bien avancé" body="Continuez à vendre et soumettre des preuves pour atteindre 75/100." />
           )}
         </section>
 
@@ -2014,7 +2029,7 @@ function SellerHomePage({ currentUser, navigate, store }) {
                 ))}
             </div>
           ) : (
-            <EmptyState icon={Store} title="Aucun produit" body="Publiez vos produits pour generer des ventes et construire votre score." />
+            <EmptyState icon={Store} title="Aucun produit" body="Publiez vos produits pour générer des ventes et construire votre score." />
           )}
         </section>
       </div>
@@ -2027,26 +2042,36 @@ function SellerHomePage({ currentUser, navigate, store }) {
               {orders.slice(0, 5).map((order) => <OrderLine key={order.id} order={order} store={store} withProgress />)}
             </div>
           ) : (
-            <EmptyState icon={ShoppingCart} title="Aucune commande" body="Chaque commande confirmee augmente votre score de bancabilite." />
+            <EmptyState icon={ShoppingCart} title="Aucune commande" body="Chaque commande confirmée augmente votre score de bancabilité." />
           )}
         </section>
 
         <section className="panel">
-          <PanelTitle icon={Landmark} title="Progression vers le credit" />
+          <PanelTitle icon={Landmark} title="Progression vers le crédit" />
           <div className="finance-score-card">
             <div className="score-ring"><strong>{bancabiliteScore}</strong><span>/100</span></div>
             <div>
               <strong>Dossier bancaire FresCoop</strong>
-              <p>{bancabiliteScore >= 75 ? "Votre profil est eligible a une demande de credit. Exportez votre dossier." : "Continuez a vendre et soumettre des preuves pour devenir bancable."}</p>
+              <p>{bancabiliteScore >= 75 ? "Votre profil est éligible. Exportez votre dossier." : "Continuez à vendre pour devenir bancable."}</p>
               <div className="button-row">
                 <Button variant="secondary" onClick={() => navigate('/bancabilite')}><FileCheck2 size={16} /> Voir mon dossier</Button>
-                {bancabiliteScore >= 60 && <Button onClick={() => navigate('/bancabilite')}><Landmark size={16} /> Demander un credit</Button>}
+                {bancabiliteScore >= 60 && <Button onClick={() => navigate('/bancabilite')}><Landmark size={16} /> Demander un crédit</Button>}
               </div>
             </div>
           </div>
-          <NoticeCard icon={ShieldCheck} title="Comment ca marche" body="Vos ventes, livraisons et preuves sont converties en score de 0 a 100. A 75+, vous pouvez exporter un dossier bancaire verifiable par QR code." />
         </section>
       </div>
+
+      <section className="panel">
+        <PanelTitle icon={ShieldCheck} title="Permissions selon votre score" />
+        <div className="permissions-progress-grid">
+          <div className={`perm-item ${bancabiliteScore >= 0 ? 'unlocked' : 'locked'}`}><CheckCircle2 size={16} /><div><strong>Publier des produits</strong><small>Score 0+</small></div></div>
+          <div className={`perm-item ${bancabiliteScore >= 20 ? 'unlocked' : 'locked'}`}>{bancabiliteScore >= 20 ? <CheckCircle2 size={16} /> : <CircleAlert size={16} />}<div><strong>Soumettre des preuves</strong><small>Score 20+</small></div></div>
+          <div className={`perm-item ${bancabiliteScore >= 40 ? 'unlocked' : 'locked'}`}>{bancabiliteScore >= 40 ? <CheckCircle2 size={16} /> : <CircleAlert size={16} />}<div><strong>Demander un micro-crédit</strong><small>Score 40+</small></div></div>
+          <div className={`perm-item ${bancabiliteScore >= 60 ? 'unlocked' : 'locked'}`}>{bancabiliteScore >= 60 ? <CheckCircle2 size={16} /> : <CircleAlert size={16} />}<div><strong>Exporter dossier PDF</strong><small>Score 60+</small></div></div>
+          <div className={`perm-item ${bancabiliteScore >= 75 ? 'unlocked' : 'locked'}`}>{bancabiliteScore >= 75 ? <CheckCircle2 size={16} /> : <CircleAlert size={16} />}<div><strong>Accès partenaires finance</strong><small>Score 75+</small></div></div>
+        </div>
+      </section>
     </PageFrame>
   );
 }
@@ -2065,7 +2090,7 @@ function ClientHomePage({ currentUser, navigate, store }) {
         <div>
           <span className="eyebrow">Bonjour {currentUser.name}</span>
           <h2>Votre espace client FresCoop</h2>
-          <p>Decouvrez les produits publies, preparez un panier, confirmez vos commandes et gardez les echanges avec les vendeurs au meme endroit.</p>
+          <p>Découvrez les produits publiés, preparez un panier, confirmez vos commandes et gardez les échanges avec les vendeurs au même endroit.</p>
           <div className="button-row">
             <Button onClick={() => navigate('/marche')}><ShoppingCart size={18} /> Aller au marche</Button>
             <Button variant="secondary" onClick={() => navigate('/commandes')}><ReceiptText size={18} /> Mes commandes</Button>
@@ -2087,9 +2112,9 @@ function ClientHomePage({ currentUser, navigate, store }) {
 
       <div className="quick-grid">
         <QuickAction icon={Search} title="Trouver un produit" body="Filtrer les offres par nom, zone ou categorie." onClick={() => navigate('/marche')} />
-        <QuickAction icon={CheckCircle2} title="Confirmer le panier" body="Verifier quantites, total et vendeur avant envoi." onClick={() => navigate('/commandes')} />
-        <QuickAction icon={MessageSquare} title="Discuter avec vendeur" body="Demander prix, disponibilite ou details produit." onClick={() => navigate('/commandes')} />
-        <QuickAction icon={Settings} title="Completer mon compte" body="Ajouter telephone, region et organisation." onClick={() => navigate('/compte')} />
+        <QuickAction icon={CheckCircle2} title="Confirmer le panier" body="Vérifier quantites, total et vendeur avant envoi." onClick={() => navigate('/commandes')} />
+        <QuickAction icon={MessageSquare} title="Discuter avec vendeur" body="Demander prix, disponibilité ou details produit." onClick={() => navigate('/commandes')} />
+        <QuickAction icon={Settings} title="Completer mon compte" body="Ajouter téléphone, region et organisation." onClick={() => navigate('/compte')} />
       </div>
 
       <div className="split-layout">
@@ -2111,6 +2136,77 @@ function ClientHomePage({ currentUser, navigate, store }) {
             </div>
           ) : (
             <EmptyState icon={ShoppingCart} title="Aucune commande" body="Ajoutez des produits au panier puis confirmez votre commande." />
+          )}
+        </section>
+      </div>
+    </PageFrame>
+  );
+}
+
+function TransporterHomePage({ currentUser, navigate, store }) {
+  const orders = getVisibleOrders(store.orders, currentUser);
+  const activeOrders = orders.filter((item) => item.status !== 'Livree' && item.status !== 'Annulee');
+  const hubs = store.hubs.filter((hub) => currentUser.role === 'admin' || hub.ownerId === currentUser.id);
+  const alerts = buildTransportAlerts(store, currentUser);
+  const availableCapacity = hubs.reduce((sum, hub) => sum + Math.max(0, Number(hub.capacityKg || 0) - Number(hub.currentStockKg || 0)), 0);
+
+  return (
+    <PageFrame>
+      <section className="role-home-panel transport-home-panel">
+        <div>
+          <span className="eyebrow">Bonjour {currentUser.name}</span>
+          <h2>Votre espace transporteur</h2>
+          <p>Suivez les commandes à acheminer, gardez vos hubs à jour et surveillez les points sensibles: froid, batterie, capacité et contact terrain.</p>
+          <div className="button-row">
+            <Button onClick={() => navigate('/operations')}><Warehouse size={18} /> Sites operations</Button>
+            <Button variant="secondary" onClick={() => navigate('/commandes')}><Truck size={18} /> Livraisons</Button>
+          </div>
+        </div>
+        <div className="home-highlight">
+          <Truck size={28} />
+          <strong>{activeOrders.length}</strong>
+          <span>mission(s) à suivre</span>
+        </div>
+      </section>
+
+      <div className="status-grid">
+        <StatCard icon={Truck} label="Livraisons ouvertes" value={activeOrders.length} tone="green" />
+        <StatCard icon={Warehouse} label="Mes hubs" value={hubs.length} tone="blue" />
+        <StatCard icon={PackageCheck} label="Capacite libre" value={`${formatCompact(availableCapacity)} kg`} tone="gold" />
+        <StatCard icon={BellRing} label="Alertes terrain" value={alerts.length} tone="coral" />
+      </div>
+
+      <div className="quick-grid">
+        <QuickAction icon={Warehouse} title="Enregistrer un hub" body="Ajouter capacité, stock, temperature et responsable." onClick={() => navigate('/operations')} />
+        <QuickAction icon={ClipboardCheck} title="Voir les livraisons" body="Suivre les commandes pretes ou en preparation." onClick={() => navigate('/commandes')} />
+        <QuickAction icon={FolderPlus} title="Documents" body="Garder les pieces et demandes logistiques." onClick={() => navigate('/dossiers')} />
+        <QuickAction icon={Settings} title="Profil transport" body="Mettre à jour téléphone, region et structure." onClick={() => navigate('/compte')} />
+      </div>
+
+      <div className="split-layout">
+        <section className="panel">
+          <PanelTitle icon={BellRing} title="Alertes terrain" />
+          {alerts.length ? (
+            <div className="compact-list">
+              {alerts.map((alert) => (
+                <article key={alert.id}>
+                  <strong>{alert.title}</strong>
+                  <span>{alert.body}</span>
+                </article>
+              ))}
+            </div>
+          ) : (
+            <EmptyState icon={ShieldCheck} title="Aucune alerte" body="Vos hubs ne signalent pas de risque capacité ou froid." />
+          )}
+        </section>
+        <section className="panel">
+          <PanelTitle icon={Truck} title="Livraisons à suivre" />
+          {activeOrders.length ? (
+            <div className="compact-list">
+              {activeOrders.slice(0, 5).map((order) => <OrderLine key={order.id} order={order} store={store} withProgress />)}
+            </div>
+          ) : (
+            <EmptyState icon={Truck} title="Aucune livraison ouverte" body="Les commandes non livrees apparaitront ici pour coordination terrain." />
           )}
         </section>
       </div>
@@ -2188,7 +2284,7 @@ function MarketplacePage({ actions, currentUser, navigate, notify, store }) {
   function openContact(product) {
     setContactDraft({
       product,
-      body: 'Bonjour, je souhaite obtenir plus d informations sur ce produit.',
+      body: "Bonjour, je souhaite obtenir plus d'informations sur ce produit.",
     });
   }
 
@@ -2254,7 +2350,7 @@ function MarketplacePage({ actions, currentUser, navigate, notify, store }) {
       <section className="panel">
         <PanelToolbar
           icon={Search}
-          title="Articles disponibles"
+          title="Articlés disponibles"
           action={(
             <div className="market-controls">
               <Field label="Recherche"><input type="search" value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Produit, secteur, zone" /></Field>
@@ -2300,7 +2396,7 @@ function MarketplacePage({ actions, currentUser, navigate, notify, store }) {
             <CatalogPager page={page} totalPages={totalPages} onPageChange={setPage} />
           </>
         ) : (
-          <EmptyState icon={Store} title="Aucun article publie" body="Les clients verront les produits des vendeurs des qu ils seront publies." />
+          <EmptyState icon={Store} title="Aucun article publie" body="Les clients verront les produits des vendeurs des qu ils seront publiés." />
         )}
       </section>
 
@@ -2499,7 +2595,7 @@ function ProductsPage({ actions, currentUser, notify, store }) {
       fieldVerifiedBy: currentUser.id,
       updatedAt: new Date().toISOString(),
     } : item));
-    notify(status === 'Fiable' ? 'Produit confirme fiable' : 'Produit signale a revoir');
+    notify(status === 'Fiable' ? 'Produit confirmé fiable' : 'Produit signalé a revoir');
   }
 
   function openChat(message) {
@@ -2551,7 +2647,7 @@ function ProductsPage({ actions, currentUser, notify, store }) {
   return (
     <PageFrame>
       {!allowed && !canVerifyProducts && <NoticeCard icon={CircleAlert} title="Acces lecture" body="Les clients commandent depuis le marche. Les transporteurs gerent surtout operations et documents." />}
-      {canVerifyProducts && <NoticeCard icon={ShieldCheck} title="Verification terrain" body="Controlez les produits ajoutes par les agriculteurs: disponibilite, qualite annoncee, zone et coherence du prix." />}
+      {canVerifyProducts && <NoticeCard icon={ShieldCheck} title="Verification terrain" body="Contrôlez les produits ajoutes par les agriculteurs: disponibilité, qualité annoncée, zone et coherence du prix." />}
       {allowed && (
         <form className="panel form-panel" onSubmit={submit}>
           <PanelTitle icon={PackageCheck} title={editingId ? 'Modifier le produit' : 'Ajouter un produit'} />
@@ -2580,7 +2676,7 @@ function ProductsPage({ actions, currentUser, notify, store }) {
             max={6}
           />
           <Field label="Description"><textarea rows="3" value={form.description} onChange={(event) => updateForm(setForm, 'description', event.target.value)} /></Field>
-          <Button type="submit" disabled={saving}><Save size={18} /> {editingId ? 'Mettre a jour' : 'Enregistrer produit'}</Button>
+          <Button type="submit" disabled={saving}><Save size={18} /> {editingId ? 'Mettre à jour' : 'Enregistrer produit'}</Button>
         </form>
       )}
 
@@ -2766,7 +2862,7 @@ function DossiersPage({ actions, currentUser, navigate, notify, store }) {
             <Field label="Titre dossier" required><input value={form.title} onChange={(event) => updateForm(setForm, 'title', event.target.value)} /></Field>
           </div>
           <div className="field-row">
-            <Field label="Personne concernee" required><input value={form.personName} onChange={(event) => updateForm(setForm, 'personName', event.target.value)} /></Field>
+            <Field label="Personne concernée" required><input value={form.personName} onChange={(event) => updateForm(setForm, 'personName', event.target.value)} /></Field>
             <Field label="CIN / NINEA / ID" required><input value={form.personId} onChange={(event) => updateForm(setForm, 'personId', event.target.value)} /></Field>
           </div>
           <div className="field-row">
@@ -2841,7 +2937,7 @@ function AttestationsPage({ actions, currentUser, notify, store }) {
   return (
     <PageFrame>
       <section className="panel">
-        <PanelTitle icon={BadgeCheck} title="Dossiers eligibles a attestation" />
+        <PanelTitle icon={BadgeCheck} title="Dossiers eligibles à attestation" />
         {dossiers.length ? (
           <div className="record-grid">
             {dossiers.map((dossier) => {
@@ -2856,7 +2952,7 @@ function AttestationsPage({ actions, currentUser, notify, store }) {
                     <ul>
                       {score.reasons.map((reason) => <li key={reason}>{reason}</li>)}
                     </ul>
-                    <Button onClick={() => generate(dossier)}><FileCheck2 size={18} /> Generer attestation</Button>
+                    <Button onClick={() => generate(dossier)}><FileCheck2 size={18} /> Générer attestation</Button>
                   </div>
                 </article>
               );
@@ -2886,7 +2982,7 @@ function AttestationsPage({ actions, currentUser, notify, store }) {
             ))}
           </div>
         ) : (
-          <EmptyState icon={FileCheck2} title="Aucune attestation" body="Les attestations generees apparaitront ici." />
+          <EmptyState icon={FileCheck2} title="Aucune attestation" body="Les attestations générées apparaitront ici." />
         )}
       </section>
     </PageFrame>
@@ -2981,7 +3077,7 @@ function ProofsPage({ actions, currentUser, notify, store }) {
           <FileInput label="Justificatif" file={form.file} onChange={(file) => updateForm(setForm, 'file', file)} />
           <div className="button-row">
             <Button type="submit"><Save size={18} /> Enregistrer</Button>
-            <Button variant="secondary" onClick={generateProof}><BadgeCheck size={18} /> Generer preuve</Button>
+            <Button variant="secondary" onClick={generateProof}><BadgeCheck size={18} /> Générer preuve</Button>
           </div>
         </form>
       )}
@@ -3404,7 +3500,7 @@ function OrdersPage({ actions, currentUser, navigate, notify, route, store }) {
       const producerName = getOrderProducerName(order, store);
       broadcastOrderEvent({ ...order, status: stepToStatus[step] || order.status }, {
         title: 'Action agent terrain',
-        body: `${stepLabels[step] || 'Action terrain enregistree'} - producteur: ${producerName}.`,
+        body: `${stepLabels[step] || 'Action terrain enregistrée'} - producteur: ${producerName}.`,
         type: 'agent-step',
       });
     }
@@ -3479,7 +3575,7 @@ function OrdersPage({ actions, currentUser, navigate, notify, route, store }) {
         <section id="orders-cart" className="orders-workspace">
           <div className="panel cart-review-panel">
             <div className="cart-review-header">
-              <PanelTitle icon={ShoppingCart} title="Panier a confirmer" />
+              <PanelTitle icon={ShoppingCart} title="Panier à confirmer" />
               <button className="cart-compact-toggle" type="button" onClick={() => setShowCart((value) => !value)}>
                 <span className="cart-badge">{cartCount}</span>
                 {showCart ? 'Masquer' : 'Afficher'}
@@ -3583,7 +3679,7 @@ function OrdersPage({ actions, currentUser, navigate, notify, route, store }) {
                   <EmptyState icon={EyeOff} title="Liste reduite" body="Les commandes sont conservees. Utilisez Developper pour les revoir." />
                 )
               ) : (
-                <EmptyState icon={Search} title="Aucun resultat" body="Aucune commande ne correspond a ce filtre." />
+                <EmptyState icon={Search} title="Aucun résultat" body="Aucune commande ne correspond à ce filtre." />
               )}
             </>
           ) : (
@@ -3713,18 +3809,18 @@ function PaymentPage({ actions, currentUser, navigate, notify, route, store }) {
       if (farmer) {
         notifications.push(createAppNotification({
           actor: currentUser,
-          body: `${formatNumber(order.quantity)} ${order.unit || product?.unit || 'kg'} de ${product?.name || 'produit'} paye(s). Preparerez le stock.`,
+          body: `${formatNumber(order.quantity)} ${order.unit || product?.unit || 'kg'} de ${product?.name || 'produit'} paye(s). Préparerez le stock.`,
           path: `/commandes?tab=orders&order=${encodeURIComponent(order.id)}`,
           relatedId: order.id,
           recipientId: farmer.id,
-          title: 'Commande payee a preparer',
+          title: 'Commande payée à préparer',
           type: 'order',
         }));
       }
       if (agent) {
         notifications.push(createAppNotification({
           actor: currentUser,
-          body: `Appeler ${farmer?.name || 'l agriculteur'}, confirmer le stock et contacter le transporteur.`,
+          body: `Appeler ${farmer?.name || "l'agriculteur"}, confirmer le stock et contacter le transporteur.`,
           path: `/commandes?tab=tracking&order=${encodeURIComponent(order.id)}`,
           relatedId: order.id,
           recipientId: agent.id,
@@ -3974,8 +4070,8 @@ const PROOF_TYPE_CONFIG_TRANSPORTEUR = [
   { id: 'cni_transporteur', label: "Carte nationale d'identité (CNI)", points: 25, level: 1, requiresUpload: true, description: "Photo recto-verso de votre CNI ou carte d'identité CEDEAO en cours de validité" },
   { id: 'permis_conduire', label: 'Permis de conduire', points: 30, level: 1, requiresUpload: true, description: "Photo recto-verso de votre permis de conduire (catégorie B minimum)" },
   { id: 'carte_grise', label: 'Carte grise du véhicule', points: 25, level: 1, requiresUpload: true, description: "Photo de la carte grise ou attestation du propriétaire du véhicule" },
-  { id: 'assurance_vehicule', label: 'Assurance véhicule', points: 20, level: 2, requiresUpload: true, description: "Attestation d'assurance du véhicule en cours de validité" },
-  { id: 'photo_vehicule', label: 'Photo du véhicule', points: 15, level: 2, requiresUpload: true, description: "Photo de votre véhicule de transport (plaque visible)" },
+  { id: 'assurance_véhicule', label: 'Assurance véhicule', points: 20, level: 2, requiresUpload: true, description: "Attestation d'assurance du véhicule en cours de validité" },
+  { id: 'photo_véhicule', label: 'Photo du véhicule', points: 15, level: 2, requiresUpload: true, description: "Photo de votre véhicule de transport (plaque visible)" },
   { id: 'visite_agent_transporteur', label: 'Visite agent terrain FresCoop', points: 40, level: 2, requiresUpload: false, requiresAgent: true, description: "Choisissez l'agent qui vous a visité. Il recevra une demande de confirmation." },
 ];
 
@@ -3996,6 +4092,27 @@ function getClientVerificationLevel(score) {
   if (score >= 60) return 2;
   if (score >= 30) return 1;
   return 0;
+}
+
+function openAttachment(attachment) {
+  const src = attachment.url || attachment.dataUrl;
+  if (!src) return;
+  if (src.startsWith('data:')) {
+    const win = window.open('', '_blank');
+    if (!win) return;
+    const isImage = src.startsWith('data:image');
+    const isPdf = src.startsWith('data:application/pdf');
+    if (isImage) {
+      win.document.write(`<html><head><title>${attachment.name || 'Document'}</title></head><body style="margin:0;display:flex;justify-content:center;align-items:center;min-height:100vh;background:#1a1a1a"><img src="${src}" style="max-width:100%;max-height:100vh;object-fit:contain" /></body></html>`);
+    } else if (isPdf) {
+      win.document.write(`<html><head><title>${attachment.name || 'Document'}</title></head><body style="margin:0"><embed src="${src}" type="application/pdf" width="100%" height="100%" style="position:fixed;inset:0" /></body></html>`);
+    } else {
+      win.document.write(`<html><head><title>${attachment.name || 'Document'}</title></head><body style="padding:2rem;font-family:system-ui"><h2>${attachment.name || 'Fichier'}</h2><p>Type: ${attachment.type || 'inconnu'}</p><a href="${src}" download="${attachment.name || 'fichier'}">Télécharger le fichier</a></body></html>`);
+    }
+    win.document.close();
+  } else {
+    window.open(src, '_blank');
+  }
 }
 
 function ActivityProofPage({ actions, currentUser, navigate, notify, store }) {
@@ -4225,7 +4342,7 @@ function ActivityProofPage({ actions, currentUser, navigate, notify, store }) {
 
 
             <Field label="Description (optionnel)">
-              <input value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Details supplementaires..." />
+              <input value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Details supplémentaires..." />
             </Field>
 
             <Button type="submit" disabled={submitting}><Upload size={18} /> {submitting ? 'Envoi...' : 'Soumettre la preuve'}</Button>
@@ -4273,7 +4390,7 @@ function ActivityProofPage({ actions, currentUser, navigate, notify, store }) {
                     <strong>{farmer?.name || 'Agriculteur'}</strong> - {config?.label || proof.proofType}
                     {proof.status === 'en_attente_agent' && <Badge style={{ marginLeft: '0.5rem', fontSize: '0.65rem' }}>Attente confirmation agent</Badge>}
                     <small style={{ display: 'block', color: 'var(--muted)' }}>{new Date(proof.createdAt).toLocaleDateString('fr-FR')} - {farmer?.region || ''}</small>
-                    {proof.attachment && <small style={{ display: 'block' }}><a href={proof.attachment.url || proof.attachment.dataUrl} target="_blank" rel="noopener">Voir pièce jointe</a></small>}
+                    {proof.attachment && <small style={{ display: 'block' }}><button type="button" onClick={() => openAttachment(proof.attachment)} style={{ background: 'none', border: 'none', color: 'var(--blue-600, #2563eb)', cursor: 'pointer', textDecoration: 'underline', padding: 0, fontSize: 'inherit' }}>Voir pièce jointe</button></small>}
                     {proof.agentId && <small style={{ display: 'block' }}>Agent désigné : {store.users.find((u) => u.id === proof.agentId)?.name || proof.agentId}</small>}
                   </div>
                   <div style={{ display: 'flex', gap: '0.5rem' }}>
@@ -4313,9 +4430,9 @@ function ActivityProofPage({ actions, currentUser, navigate, notify, store }) {
                       </div>
                       <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
                         {proof.attachment && (
-                          <a href={proof.attachment.url || proof.attachment.dataUrl} target="_blank" rel="noopener" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem', padding: '0.35rem 0.75rem', background: 'var(--surface-alt, #f3f4f6)', borderRadius: '0.375rem', fontSize: '0.75rem', fontWeight: 600, color: 'var(--blue-600, #2563eb)', textDecoration: 'none' }}>
+                          <button type="button" onClick={() => openAttachment(proof.attachment)} style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem', padding: '0.35rem 0.75rem', background: 'var(--surface-alt, #f3f4f6)', borderRadius: '0.375rem', fontSize: '0.75rem', fontWeight: 600, color: 'var(--blue-600, #2563eb)', border: 'none', cursor: 'pointer' }}>
                             <Eye size={14} /> Voir document
-                          </a>
+                          </button>
                         )}
                         {(proof.status === 'en_attente' || proof.status === 'en_attente_agent') && (
                           <>
@@ -4423,7 +4540,7 @@ function OperationsPage({ actions, currentUser, notify, store }) {
   function autoAssignFarmers() {
     if (hubs.length === 0) { notify('Aucun hub disponible', 'error'); return; }
     const gpsHubs = hubs.filter((h) => h.gpsLat && h.gpsLng);
-    if (gpsHubs.length === 0) { notify('Aucun hub avec coordonnees GPS', 'error'); return; }
+    if (gpsHubs.length === 0) { notify('Aucun hub avec coordonnées GPS', 'error'); return; }
     let assigned = 0;
     actions.setUsers((users) => users.map((u) => {
       if (u.role !== 'agriculteur' || u.assignedHubId || !u.gpsLat || !u.gpsLng) return u;
@@ -4443,7 +4560,7 @@ function OperationsPage({ actions, currentUser, notify, store }) {
     <PageFrame>
       {canManage && (
         <section className="panel" style={{ padding: '1rem' }}>
-          <PanelToolbar icon={BarChart3} title="Dashboard capacite hubs" action={
+          <PanelToolbar icon={BarChart3} title="Dashboard capacité hubs" action={
             <Button variant="secondary" onClick={autoAssignFarmers}><MapPin size={16} /> Auto-affecter agriculteurs</Button>
           } />
           <div className="status-grid" style={{ marginTop: '1rem' }}>
@@ -4457,7 +4574,7 @@ function OperationsPage({ actions, currentUser, notify, store }) {
               <strong>Alertes saturation:</strong>
               {saturatedHubs.map((h) => (
                 <span key={h.id} style={{ display: 'block', marginTop: '0.25rem' }}>
-                  {h.name} ({h.region}) - {h.usagePercent}% capacite - {h.assignedFarmers} agriculteurs
+                  {h.name} ({h.region}) - {h.usagePercent}% capacité - {h.assignedFarmers} agriculteurs
                 </span>
               ))}
             </div>
@@ -4495,7 +4612,7 @@ function OperationsPage({ actions, currentUser, notify, store }) {
 
       {canManage && (
         <form className="panel form-panel" onSubmit={submit}>
-          <PanelTitle icon={Warehouse} title="Ajouter site operationnel" />
+          <PanelTitle icon={Warehouse} title="Ajouter site opérationnel" />
           <div className="field-row">
             <Field label="Nom hub" required><input value={form.name} onChange={(event) => updateForm(setForm, 'name', event.target.value)} /></Field>
             <Field label="Région" required><input value={form.region} onChange={(event) => updateForm(setForm, 'region', event.target.value)} /></Field>
@@ -4534,7 +4651,7 @@ function OperationsPage({ actions, currentUser, notify, store }) {
   );
 }
 
-const LOT_STATUSES = ['Depose', 'En froid', 'Controle qualite', 'Reserve', 'Vente partielle', 'Sorti', 'Livre', 'Paye'];
+const LOT_STATUSES = ['Depose', 'En froid', 'Contrôle qualité', 'Reserve', 'Vente partielle', 'Sorti', 'Livre', 'Paye'];
 
 function generateLotCode(hub) {
   const prefix = (hub?.region || 'SN').slice(0, 3).toUpperCase();
@@ -4568,8 +4685,8 @@ function LotIntelligencePage({ actions, currentUser, notify, store }) {
   function submitLot(e) {
     e.preventDefault();
     if (!lotForm.productName.trim()) { notify('Nom du produit requis', 'error'); return; }
-    if (!lotForm.ownerId) { notify('Selectionnez le producteur', 'error'); return; }
-    if (!lotForm.hubId) { notify('Selectionnez le hub de depot', 'error'); return; }
+    if (!lotForm.ownerId) { notify('Sélectionnéz le producteur', 'error'); return; }
+    if (!lotForm.hubId) { notify('Sélectionnéz le hub de depot', 'error'); return; }
     if (!lotForm.weightKg || Number(lotForm.weightKg) <= 0) { notify('Quantite invalide', 'error'); return; }
 
     const hub = hubs.find((h) => h.id === lotForm.hubId);
@@ -4627,7 +4744,7 @@ function LotIntelligencePage({ actions, currentUser, notify, store }) {
     };
     actions.setNotifications((items) => [notif, ...items]);
 
-    notify(`Lot ${code} cree avec succes`);
+    notify(`Lot ${code} crée avec succes`);
     setLotForm(emptyLotForm());
     setShowCreateForm(false);
     setSelectedLotId(lot.id);
@@ -4636,14 +4753,14 @@ function LotIntelligencePage({ actions, currentUser, notify, store }) {
   function recordMovement(e) {
     e.preventDefault();
     if (!selectedLot) return;
-    if (!movementForm.status) { notify('Selectionnez le nouveau statut', 'error'); return; }
+    if (!movementForm.status) { notify('Sélectionnéz le nouveau statut', 'error'); return; }
 
     const now = new Date().toISOString();
     const movement = {
       timestamp: now,
       status: movementForm.status,
       actor: currentUser.name,
-      note: movementForm.note.trim() || `Statut mis a jour: ${movementForm.status}`,
+      note: movementForm.note.trim() || `Statut mis à jour: ${movementForm.status}`,
     };
 
     actions.setLots((items) => items.map((lot) => {
@@ -4655,7 +4772,7 @@ function LotIntelligencePage({ actions, currentUser, notify, store }) {
       };
     }));
     actions.setAuditLogs((items) => [createAuditLog(currentUser, 'lot_movement', `Lot ${selectedLot.code}: ${selectedLot.status} -> ${movementForm.status}. ${movementForm.note || ''}`, selectedLot.id), ...items]);
-    notify(`Lot ${selectedLot.code} mis a jour: ${movementForm.status}`);
+    notify(`Lot ${selectedLot.code} mis à jour: ${movementForm.status}`);
     setMovementForm({ status: '', note: '' });
   }
 
@@ -4688,7 +4805,7 @@ function LotIntelligencePage({ actions, currentUser, notify, store }) {
       status: 'Reserve',
       movements: [...(l.movements || []), { timestamp: now, status: 'Reserve', actor: currentUser.name, note: `Reservation B2B: ${reservation.quantityKg} kg` }],
     }));
-    actions.setAuditLogs((items) => [createAuditLog(currentUser, 'reservation_b2b', 'Reservation B2B creee', lot.id), ...items]);
+    actions.setAuditLogs((items) => [createAuditLog(currentUser, 'reservation_b2b', 'Reservation B2B créée', lot.id), ...items]);
     notify('Réservation B2B créée avec paiement partenaire');
   }
 
@@ -4808,7 +4925,7 @@ function LotIntelligencePage({ actions, currentUser, notify, store }) {
                   <input inputMode="decimal" value={lotForm.recommendedPrice} onChange={(e) => setLotForm({ ...lotForm, recommendedPrice: e.target.value })} placeholder="ex: 420" />
                 </Field>
               </div>
-              <Button type="submit"><PackageCheck size={18} /> Enregistrer le lot et generer QR</Button>
+              <Button type="submit"><PackageCheck size={18} /> Enregistrer le lot et générer QR</Button>
             </form>
           )}
         </section>
@@ -4838,7 +4955,7 @@ function LotIntelligencePage({ actions, currentUser, notify, store }) {
               onShareConsent={() => shareConsent(selectedLot)}
             />
           ) : (
-            <EmptyState icon={ClipboardCheck} title="Selectionnez un lot" body="Choisissez un lot pour voir son jumeau numerique." />
+            <EmptyState icon={ClipboardCheck} title="Sélectionnéz un lot" body="Choisissez un lot pour voir son jumeau numerique." />
           )}
         </div>
       </section>
@@ -4849,7 +4966,7 @@ function LotIntelligencePage({ actions, currentUser, notify, store }) {
           <form onSubmit={recordMovement} style={{ display: 'grid', gridTemplateColumns: '1fr 2fr auto', gap: '0.75rem', alignItems: 'end', marginTop: '0.75rem' }}>
             <Field label="Nouveau statut" required>
               <select value={movementForm.status} onChange={(e) => setMovementForm({ ...movementForm, status: e.target.value })}>
-                <option value="">-- Etape --</option>
+                <option value="">-- Etapé --</option>
                 {nextStatuses.map((s) => <option key={s} value={s}>{s}</option>)}
               </select>
             </Field>
@@ -4884,7 +5001,7 @@ function LotIntelligencePage({ actions, currentUser, notify, store }) {
       <div className="split-layout">
         <section className="panel">
           <PanelTitle icon={Activity} title="Timeline de vie du lot" />
-          {selectedLot ? <LotTimeline lot={selectedLot} /> : <EmptyState icon={Activity} title="Aucun lot selectionne" body="Selectionnez un lot pour voir son parcours." />}
+          {selectedLot ? <LotTimeline lot={selectedLot} /> : <EmptyState icon={Activity} title="Aucun lot sélectionné" body="Sélectionnéz un lot pour voir son parcours." />}
         </section>
         <section className="panel">
           <PanelTitle icon={ShieldCheck} title="Consentements et audit" />
@@ -5031,7 +5148,7 @@ function UsersPage({ actions, currentUser, navigate, notify, store }) {
           actor: currentUser,
           body: status === 'Actif'
             ? `Votre compte ${roleLabel(user.role)} est maintenant actif. Vous pouvez vous connecter et utiliser FresCoop.`
-            : `Votre demande de compte ${roleLabel(user.role)} a ete rejetee. Contactez un administrateur FresCoop pour plus d informations.`,
+            : `Votre demande de compte ${roleLabel(user.role)} a été rejetée. Contactez un administrateur FresCoop pour plus d'informations.`,
           path: '/',
           recipientId: user.id,
           title: status === 'Actif' ? `Compte ${roleLabel(user.role)} approuve` : `Inscription ${roleLabel(user.role)} rejetee`,
@@ -5046,7 +5163,7 @@ function UsersPage({ actions, currentUser, navigate, notify, store }) {
         ? `${user.name} approuve. Le compte est actif.`
         : status === 'Rejete' && wasPending
           ? `${user.name} rejete. Le compte reste bloque.`
-          : `Statut de ${user.name} mis a jour: ${status}`,
+          : `Statut de ${user.name} mis à jour: ${status}`,
       status === 'Rejete' ? 'info' : 'success',
     );
   }
@@ -5201,7 +5318,7 @@ function UsersPage({ actions, currentUser, navigate, notify, store }) {
                         onDelete={async () => {
                           if (!canDelete) return;
 
-                          // Étape 1 : avertissement avec impact détaillé
+                          // Étapé 1 : avertissement avec impact détaillé
                           const relatedProducts = (store.products || []).filter((p) => p.ownerId === user.id).length;
                           const relatedOrders = (store.orders || []).filter((o) => o.clientId === user.id || o.sellerId === user.id).length;
                           const relatedLots = (store.lots || []).filter((l) => l.ownerId === user.id).length;
@@ -5221,7 +5338,7 @@ function UsersPage({ actions, currentUser, navigate, notify, store }) {
                           });
                           if (!ok) return;
 
-                          // Étape 2 : saisie du nom (protection anti-suppression accidentelle)
+                          // Étapé 2 : saisie du nom (protection anti-suppression accidentelle)
                           const typed = window.prompt(
                             `Pour confirmer la suppression, tapez exactement le nom :\n\n${user.name}`,
                             '',
@@ -5232,7 +5349,7 @@ function UsersPage({ actions, currentUser, navigate, notify, store }) {
                             return;
                           }
 
-                          // Étape 3 : journal d'audit + suppression effective
+                          // Étapé 3 : journal d'audit + suppression effective
                           actions.setAuditLogs((items) => [
                             createAuditLog(
                               currentUser,
@@ -5275,7 +5392,7 @@ function ImpactPage({ stats, store }) {
         <div>
           <span className="uemoa-badge">IMPACT FILIERES UEMOA</span>
           <h2>FresCoop en chiffres: indicateurs mesurables</h2>
-          <p>Chaque lot trace, chaque paiement partenaire, chaque capteur froid convertit des pertes en revenu pour les acteurs agricoles UEMOA. Aucun chiffre fictif: ces KPI sont calcules en temps reel sur l activite du compte.</p>
+          <p>Chaque lot trace, chaque paiement partenaire, chaque capteur froid convertit des pertes en revenu pour les acteurs agricoles UEMOA. Aucun chiffre fictif: ces KPI sont calcules en temps reel sur l activité du compte.</p>
           <div className="paydunya-counter" style={{ marginTop: '1rem', padding: '0.75rem 1.25rem', background: 'var(--surface)', borderRadius: '0.5rem', display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
             <ReceiptText size={18} />
             <span><strong>{impact.paydunyaTxCount}</strong> paiements PayDunya (Wave, OM, Free Money)</span>
@@ -5385,10 +5502,240 @@ function computeUemoaImpact(store) {
   };
 }
 
+function AntiWastePage({ actions, currentUser, navigate, notify, store }) {
+  const alerts = useMemo(() => buildAntiWasteAlerts(store), [store]);
+  const canPublish = currentUser.role === 'agriculteur' || currentUser.role === 'admin';
+  const canBuy = isBuyerRole(currentUser.role);
+
+  function applyFlashDiscount(alert) {
+    if (!canPublish) {
+      notify('Action réservée aux producteurs');
+      return;
+    }
+    const product = store.products.find((item) => item.id === alert.productId);
+    if (!product) return;
+    const newPrice = Math.max(10, Math.round(Number(product.price || 0) * (1 - alert.suggestedDiscountPct / 100)));
+    actions.setProducts((items) => items.map((item) => item.id === product.id ? { ...item, price: newPrice, flashSaleStartedAt: new Date().toISOString(), flashSaleDiscountPct: alert.suggestedDiscountPct } : item));
+    actions.setAuditLogs((items) => [createAuditLog(currentUser, 'flash_discount_applied', `Prix ${product.name}: ${product.price} -> ${newPrice} FCFA (anti-gaspillage)`, product.id), ...items]);
+    const notif = createAppNotification({
+      actor: currentUser,
+      body: `${product.name} -${alert.suggestedDiscountPct}% (anti-gaspi). Disponible immediatement.`,
+      path: '/marche',
+      recipientRole: 'acheteurB2B',
+      title: 'Vente éclair anti-gaspi',
+      type: 'anti-waste',
+    });
+    actions.setNotifications((items) => [notif, ...items]);
+    notify(`Prix reduit de ${alert.suggestedDiscountPct}%. Acheteurs B2B notifiés.`);
+  }
+
+  function buyFlash(alert) {
+    if (!canBuy) {
+      notify('Réservez depuis le marché comme acheteur B2B');
+      return;
+    }
+    const product = store.products.find((item) => item.id === alert.productId);
+    if (!product) {
+      notify('Produit indisponible', 'error');
+      return;
+    }
+    const nextCart = addProductToCart(readCartFromStorage(store.products), product, 1);
+    writeCartToStorage(nextCart);
+    notify(`${product.name} ajoute au panier anti-gaspi`, 'success');
+    navigate('/commandes?tab=cart');
+  }
+
+  function loadAntiWasteFixtures() {
+    const fixtures = createAntiWasteFixtureProducts(store, currentUser);
+    if (!fixtures.length) {
+      notify('Les lots fictifs anti-gaspi sont déjà disponibles.');
+      return;
+    }
+    actions.setProducts((items) => [...fixtures, ...items]);
+    actions.setAuditLogs((items) => [
+      createAuditLog(currentUser, 'anti_waste_fixtures_loaded', `${fixtures.length} lots fictifs anti-gaspi ajoutes`, 'anti-gaspi'),
+      ...items,
+    ]);
+    notify('Lots fictifs anti-gaspi ajoutes pour les tests.', 'success');
+  }
+
+  const heroCopy = {
+    agriculteur: {
+      title: 'Vos lots proches de péremption',
+      body: 'Appliquez une réduction rapide (-15 à -40%) pour éviter la perte et sauver votre marge. Plus vous agissez vite, mieux votre score de bancabilité progresse.',
+    },
+    agentTerrain: {
+      title: 'Lots à risque à superviser',
+      body: 'Contactez les producteurs concernés, organisez une vente groupée ou proposez un transfert vers un hub froid avant péremption.',
+    },
+    transporteur: {
+      title: 'Priorités logistiques anti-gaspi',
+      body: 'Ces lots doivent arriver chez un acheteur en 1 à 3 jours. Priorisez-les dans vos tournées et allouez un véhicule réfrigéré si disponible.',
+    },
+    client: {
+      title: 'Produits à sauver · prix réduits',
+      body: 'Achetez ces produits à prix cassé et aidez à réduire le gaspillage. Chaque achat évite des pertes et soutient un producteur.',
+    },
+    acheteurB2B: {
+      title: 'Opportunités sourcing anti-gaspi',
+      body: 'Jusqu\'à -40% sur des lots frais de qualité. Sécurisez un volume immédiat et valoriséz votre engagement RSE.',
+    },
+    partenaire: {
+      title: 'Vue risque post-récolte',
+      body: 'Indicateur clé pour évaluer la performance opérationnelle des producteurs financés. Un agriculteur qui agit vite sur ses alertes prouve sa discipline de gestion.',
+    },
+    admin: {
+      title: 'Supervision anti-gaspillage',
+      body: 'Vue consolidée sur tous les lots à risque. Intervenez si un producteur ne réagit pas dans les 12h.',
+    },
+  };
+  const copy = heroCopy[currentUser.role] || {
+    title: 'Lots proches de péremption · alertes et ventes éclair',
+    body: '30 à 40% des récoltes peuvent être perdues après récolte dans plusieurs filières. FresCoop détecte les lots à durée courte et propose des ventes éclair à prix dégressif.',
+  };
+
+  return (
+    <PageFrame>
+      <section className="panel uemoa-hero">
+        <div>
+          <span className="uemoa-badge">ANTI-GASPI</span>
+          <h2>{copy.title}</h2>
+          <p>{copy.body}</p>
+        </div>
+      </section>
+
+      <div className="status-grid">
+        <StatCard icon={CircleAlert} label="Lots en alerte" value={alerts.length} tone="coral" />
+        <StatCard icon={Leaf} label="Kg à sauver" value={formatCompact(alerts.reduce((sum, a) => sum + a.quantityKg, 0))} tone="green" />
+        <StatCard icon={CircleDollarSign} label="Valeur potentielle" value={`${formatCompact(alerts.reduce((sum, a) => sum + a.currentValue, 0))} FCFA`} tone="gold" />
+      </div>
+
+      {alerts.length ? (
+        <section className="panel">
+          <PanelTitle icon={CircleAlert} title="Alertes actives" />
+          <div className="anti-waste-list">
+            {alerts.map((alert) => (
+              <article key={alert.productId} className={`anti-waste-card urgency-${alert.urgency}`}>
+                <header>
+                  <div>
+                    <strong>{alert.productName}</strong>
+                    <small>{alert.sellerName} · {alert.region || 'Région non précisée'}</small>
+                  </div>
+                  <span className={`urgency-tag urgency-${alert.urgency}`}>{alert.urgencyLabel}</span>
+                </header>
+                <div className="anti-waste-metrics">
+                  <div><em>Quantité</em><b>{formatNumber(alert.quantityKg)} kg</b></div>
+                  <div><em>Jours restants</em><b>{alert.daysLeft} j</b></div>
+                  <div><em>Prix actuel</em><b>{formatMoney(alert.currentUnitPrice)}/{alert.unit}</b></div>
+                  <div><em>Prix suggéré</em><b>{formatMoney(alert.suggestedPrice)}/{alert.unit}</b></div>
+                </div>
+                <div className="button-row">
+                  {canPublish && <Button variant="secondary" onClick={() => applyFlashDiscount(alert)}><RefreshCcw size={16} /> Appliquer -{alert.suggestedDiscountPct}%</Button>}
+                  {canBuy && <Button onClick={() => buyFlash(alert)}><ShoppingCart size={16} /> Acheter maintenant</Button>}
+                  {currentUser.role === 'transporteur' && <Button variant="secondary" onClick={() => navigate('/commandes')}><Truck size={16} /> Planifier livraison</Button>}
+                  {currentUser.role === 'agentTerrain' && <Button variant="secondary" onClick={() => navigate('/commandes')}><PhoneCall size={16} /> Contacter producteur</Button>}
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+      ) : (
+        <section className="panel anti-waste-empty">
+          <EmptyState icon={CheckCircle2} title="Aucun lot en alerte" body="Tous les lots sont encore dans leur fenêtre optimale. Chargez des lots fictifs pour tester l'onglet anti-gaspi." />
+          <Button variant="secondary" onClick={loadAntiWasteFixtures}><RefreshCcw size={16} /> Charger des lots fictifs</Button>
+        </section>
+      )}
+    </PageFrame>
+  );
+}
+
+function buildAntiWasteAlerts(store) {
+  const products = store.products || [];
+  const users = store.users || [];
+  const now = Date.now();
+  const alerts = [];
+  for (const product of products) {
+    const createdAt = new Date(product.createdAt || now).getTime();
+    const explicitExpiry = product.expiryDate ? new Date(`${product.expiryDate}T23:59:59`).getTime() : NaN;
+    const shelfLifeDays = Number(product.shelfLifeDays || product.daysToExpire || estimateShelfLife(product.category || product.name));
+    const expireAt = Number.isFinite(explicitExpiry) ? explicitExpiry : createdAt + shelfLifeDays * 86400000;
+    const daysLeft = Math.round((expireAt - now) / 86400000);
+    const qty = Number(product.quantity || 0);
+    if (qty <= 0) continue;
+    if (daysLeft > 2) continue;
+    const seller = users.find((user) => user.id === product.ownerId);
+    const urgency = daysLeft <= 1 ? 'critical' : daysLeft <= 3 ? 'high' : 'medium';
+    const discount = urgency === 'critical' ? 40 : urgency === 'high' ? 25 : 15;
+    const unitPrice = Number(product.price || 0);
+    alerts.push({
+      productId: product.id,
+      productName: product.name,
+      sellerName: seller?.name || 'Producteur',
+      region: product.zone || seller?.region || '',
+      quantityKg: qty,
+      daysLeft: Math.max(0, daysLeft),
+      urgency,
+      urgencyLabel: urgency === 'critical' ? 'Critique · 24h' : urgency === 'high' ? 'Eleve · 2-3j' : 'Surveillance',
+      currentUnitPrice: unitPrice,
+      suggestedPrice: Math.round(unitPrice * (1 - discount / 100)),
+      suggestedDiscountPct: discount,
+      currentValue: unitPrice * qty,
+      unit: product.unit || 'kg',
+    });
+  }
+  return alerts.sort((a, b) => a.daysLeft - b.daysLeft);
+}
+
+function createAntiWasteFixtureProducts(store, currentUser) {
+  const existingIds = new Set((store.products || []).map((product) => product.id));
+  const owner = (store.users || []).find((user) => user.role === 'agriculteur' && user.status === 'Actif')
+    || (store.users || []).find((user) => user.role === 'agriculteur')
+    || currentUser;
+  const now = Date.now();
+  const fixtures = [
+    { id: 'demo-antigaspi-tomates', name: 'Tomates cerises test anti-gaspi', category: 'Legumes', quantity: 42, unit: 'kg', price: 950, daysAgo: 4, shelfLifeDays: 5, zone: 'Dakar' },
+    { id: 'demo-antigaspi-mangues', name: 'Mangues Kent fin de date', category: 'Fruits', quantity: 65, unit: 'kg', price: 1200, daysAgo: 6, shelfLifeDays: 8, zone: 'Thies' },
+    { id: 'demo-antigaspi-salade', name: 'Laitue fraiche a écouler', category: 'Legumes', quantity: 28, unit: 'kg', price: 700, daysAgo: 3, shelfLifeDays: 5, zone: 'Rufisque' },
+  ];
+
+  return fixtures
+    .filter((item) => !existingIds.has(item.id))
+    .map((item) => ({
+      id: item.id,
+      createdAt: new Date(now - item.daysAgo * 86400000).toISOString(),
+      updatedAt: new Date().toISOString(),
+      ownerId: owner?.id || currentUser.id,
+      name: item.name,
+      category: item.category,
+      quantity: item.quantity,
+      unit: item.unit,
+      price: item.price,
+      zone: item.zone || owner?.region || 'Senegal',
+      description: 'Lot fictif ajoute pour vérifier les alertes anti-gaspi et les ventes éclair.',
+      status: 'Publie',
+      shelfLifeDays: item.shelfLifeDays,
+      expiryDate: new Date(now + Math.max(0, item.shelfLifeDays - item.daysAgo) * 86400000).toISOString().slice(0, 10),
+      images: [],
+      flashSaleStartedAt: '',
+      flashSaleDiscountPct: 0,
+    }));
+}
+
+function estimateShelfLife(key) {
+  const text = String(key || '').toLowerCase();
+  if (/tomate|laitue|salade|concombre|feuille|menthe|persil/.test(text)) return 5;
+  if (/mangue|papaye|banane|fruit/.test(text)) return 8;
+  if (/oignon|pomme de terre|patate|ail|carotte/.test(text)) return 30;
+  if (/riz|mil|sorgho|niebe|arachide|cereale/.test(text)) return 180;
+  if (/poisson|viande|volaille|poulet/.test(text)) return 2;
+  return 10;
+}
+
 function BancabilitePage({ actions, currentUser, notify, store }) {
   const isFinancePartner = currentUser.role === 'partenaire';
   const isAgriculteur = currentUser.role === 'agriculteur';
   const [filter, setFilter] = useState('all');
+  const [searchQuery, setSearchQuery] = useState('');
   const [loanForm, setLoanForm] = useState({ amount: '', purpose: '', months: '6' });
   const [showLoanForm, setShowLoanForm] = useState(false);
 
@@ -5401,17 +5748,21 @@ function BancabilitePage({ actions, currentUser, notify, store }) {
   const myLoans = loans.filter((loan) => loan.farmerId === currentUser.id || loan.partnerId === currentUser.id);
 
   const enriched = scope.map((user) => ({ user, dossier: buildBancabiliteDossier(user, store) }));
-  const visible = enriched.filter(({ dossier }) => {
-    if (filter === 'eligible') return dossier.score >= 60;
-    if (filter === 'pending') return dossier.score >= 40 && dossier.score < 60;
-    if (filter === 'risky') return dossier.score < 40;
+  const visible = enriched.filter(({ user, dossier }) => {
+    if (filter === 'eligible' && dossier.score < 60) return false;
+    if (filter === 'pending' && (dossier.score < 40 || dossier.score >= 60)) return false;
+    if (filter === 'risky' && dossier.score >= 40) return false;
+    if (searchQuery.trim()) {
+      const q = searchQuery.trim().toLowerCase();
+      return user.name.toLowerCase().includes(q) || user.id.toLowerCase().includes(q) || (user.region || '').toLowerCase().includes(q) || (user.email || '').toLowerCase().includes(q);
+    }
     return true;
   });
 
   function exportDossier(user) {
     const dossier = buildBancabiliteDossier(user, store);
     downloadHtml(`bancabilite-${user.id}.html`, renderBancabiliteHtml(dossier));
-    notify(`Dossier bancabilite genere pour ${user.name}`);
+    notify(`Dossier bancabilité généré pour ${user.name}`);
   }
 
   function submitLoanRequest(event) {
@@ -5508,7 +5859,12 @@ function BancabilitePage({ actions, currentUser, notify, store }) {
 
       {isAgriculteur && (() => {
         const myDossier = buildBancabiliteDossier(currentUser, store);
-        const maxEligible = Math.round(myDossier.monthlyAverage * (myDossier.score >= 75 ? 6 : myDossier.score >= 60 ? 4 : myDossier.score >= 40 ? 2 : 0));
+        const scoreFactor = myDossier.score >= 80 ? 0.7 : myDossier.score >= 60 ? 0.5 : myDossier.score >= 40 ? 0.3 : 0;
+        const monthsFactor = Number(loanForm.months) / 6;
+        const regularityBonus = myDossier.transactionsCount >= 10 ? 1.2 : myDossier.transactionsCount >= 5 ? 1.1 : 1.0;
+        const paydunyaBonus = myDossier.paydunyaCount >= 3 ? 1.15 : 1.0;
+        const maxEligible = Math.round(myDossier.monthlyAverage * 6 * scoreFactor * regularityBonus * paydunyaBonus);
+        const suggestedForDuration = Math.round(maxEligible * monthsFactor);
         return (
           <section className="panel bancabilite-my-score">
             <div className="bancabilite-score">
@@ -5523,12 +5879,16 @@ function BancabilitePage({ actions, currentUser, notify, store }) {
             </div>
             <div className="bancabilite-kpi">
               <div><em>Revenu mensuel moyen</em><b>{formatMoney(myDossier.monthlyAverage)}</b></div>
-              <div><em>Transactions verifiees</em><b>{myDossier.transactionsCount}</b></div>
+              <div><em>Transactions vérifiées</em><b>{myDossier.transactionsCount}</b></div>
               <div><em>Paiements PayDunya</em><b>{myDossier.paydunyaCount}</b></div>
-              <div><em>Montant eligible estime</em><b>{maxEligible > 0 ? formatMoney(maxEligible) : 'Score insuffisant'}</b></div>
+              <div><em>Montant max éligible (IA)</em><b>{maxEligible > 0 ? formatMoney(maxEligible) : 'Score insuffisant'}</b></div>
             </div>
+            {maxEligible > 0 && (
+              <NoticeCard icon={Activity} title="Calcul IA du montant éligible" body={`Basé sur : revenu moyen (${formatMoney(myDossier.monthlyAverage)}/mois) × facteur score (${(scoreFactor * 100).toFixed(0)}%) × régularité (×${regularityBonus.toFixed(2)}) × bonus PayDunya (×${paydunyaBonus.toFixed(2)}). Montant max : ${formatMoney(maxEligible)} sur 6 mois.`} />
+            )}
             <div className="button-row">
               <Button variant="secondary" onClick={() => exportDossier(currentUser)}><Download size={16} /> Exporter mon dossier (PDF)</Button>
+              {maxEligible > 0 && <Button onClick={() => { setShowLoanForm(true); updateForm(setLoanForm, 'amount', String(suggestedForDuration)); }}><Landmark size={16} /> Demander un crédit ({formatMoney(suggestedForDuration)})</Button>}
             </div>
           </section>
         );
@@ -5579,7 +5939,7 @@ function BancabilitePage({ actions, currentUser, notify, store }) {
           {showLoanForm && (
             <form className="stack-form" onSubmit={submitLoanRequest}>
               <div className="field-row">
-                <Field label="Montant souhaité (FCFA)" required><input type="number" min="0" value={loanForm.amount} onChange={(event) => updateForm(setLoanForm, 'amount', event.target.value)} /></Field>
+                <Field label="Montant souhaité (FCFA) — suggestion IA pré-remplie" required><input type="number" min="0" value={loanForm.amount} onChange={(event) => updateForm(setLoanForm, 'amount', event.target.value)} /></Field>
                 <Field label="Durée (mois)" required>
                   <select value={loanForm.months} onChange={(event) => updateForm(setLoanForm, 'months', event.target.value)}>
                     <option value="3">3 mois</option>
@@ -5641,6 +6001,7 @@ function BancabilitePage({ actions, currentUser, notify, store }) {
 
           <section className="panel">
             <div className="loan-filter-bar">
+              <input type="text" placeholder="Rechercher par nom, ID ou région..." value={searchQuery} onChange={(event) => setSearchQuery(event.target.value)} style={{ flex: 1, minWidth: '200px', padding: '0.5rem 0.75rem', borderRadius: '0.375rem', border: '1px solid var(--border, #e5e7eb)', fontSize: '0.85rem' }} />
               {[
                 ['all', 'Tous'],
                 ['eligible', 'Éligibles'],
@@ -5749,7 +6110,7 @@ function buildBancabiliteDossier(user, store) {
 
   const criteria = [
     { label: 'Anciennete compte', value: `${monthsActive} mois`, points: Math.min(20, monthsActive * 2) },
-    { label: 'Transactions verifiees', value: transactions.length + paidOrders.length, points: Math.min(20, (transactions.length + paidOrders.length) * 2) },
+    { label: 'Transactions vérifiées', value: transactions.length + paidOrders.length, points: Math.min(20, (transactions.length + paidOrders.length) * 2) },
     { label: 'Paiements PayDunya', value: paydunyaTx.length, points: Math.min(15, paydunyaTx.length * 3) },
     { label: 'Lots traces avec capteurs', value: lots.length, points: Math.min(10, lots.length * 2) },
     { label: 'Attestations qualifiees', value: attestations.length, points: Math.min(10, attestations.length * 3) },
@@ -5780,8 +6141,8 @@ function buildBancabiliteDossier(user, store) {
 
 function renderBancabiliteHtml(dossier) {
   const rows = dossier.criteria.map((crit) => `<tr><td>${escapeHtml(crit.label)}</td><td>${escapeHtml(String(crit.value))}</td><td>${crit.points} pts</td></tr>`).join('');
-  return renderDocumentShell(`Dossier bancabilite ${dossier.user.name}`, `
-    <h1>Dossier de bancabilite FresCoop</h1>
+  return renderDocumentShell(`Dossier bancabilité ${dossier.user.name}`, `
+    <h1>Dossier de bancabilité FresCoop</h1>
     <p class="code">Code verification: ${escapeHtml(dossier.verificationCode)}</p>
     <section>
       <h2>Bénéficiaire</h2>
@@ -5789,7 +6150,7 @@ function renderBancabiliteHtml(dossier) {
       <p>Role: ${escapeHtml(dossier.user.role)} - Organisation: ${escapeHtml(dossier.user.organization || '—')} - Region: ${escapeHtml(dossier.user.region || '—')}</p>
     </section>
     <section>
-      <h2>Score de bancabilite</h2>
+      <h2>Score de bancabilité</h2>
       <p>Score global: <strong>${dossier.score}/100 (Grade ${escapeHtml(dossier.grade)})</strong></p>
       <p>${escapeHtml(dossier.verdict)}</p>
       <table><thead><tr><th>Critere</th><th>Valeur</th><th>Points</th></tr></thead><tbody>${rows}</tbody></table>
@@ -5798,7 +6159,7 @@ function renderBancabiliteHtml(dossier) {
       <h2>Indicateurs cles</h2>
       <p>Revenu total verifie: <strong>${escapeHtml(formatMoney(dossier.totalRevenue))}</strong></p>
       <p>Revenu mensuel moyen: <strong>${escapeHtml(formatMoney(dossier.monthlyAverage))}</strong></p>
-      <p>Transactions verifiees: ${dossier.transactionsCount} | Paiements PayDunya: ${dossier.paydunyaCount}</p>
+      <p>Transactions vérifiées: ${dossier.transactionsCount} | Paiements PayDunya: ${dossier.paydunyaCount}</p>
       <p>Lots traces: ${dossier.lotsCount} | Attestations: ${dossier.attestationsCount}</p>
     </section>
     <section>
@@ -5834,7 +6195,7 @@ function UssdSimulatorPage({ currentUser, store }) {
         setScreen('menu');
       }
     } else if (screen === 'sale' && /^\d+$/.test(value)) {
-      setHistory((items) => [...items, `Vente enregistree: ${value} kg. Notification envoyee a l agent terrain.`]);
+      setHistory((items) => [...items, `Vente enregistrée: ${value} kg. Notification envoyée a l agent terrain.`]);
       setScreen('menu');
     }
   }
@@ -5904,10 +6265,10 @@ function UssdSimulatorPage({ currentUser, store }) {
           <PanelTitle icon={PhoneCall} title="Pourquoi ça change tout" />
           <ul className="uemoa-bullets">
             <li><strong>Inclusion réelle</strong>: fonctionne sur Nokia 105 à 8000 FCFA, pas besoin de 4G.</li>
-            <li><strong>Couverture totale</strong>: le USSD passe meme en zones rurales avec 2G.</li>
+            <li><strong>Couverture totale</strong>: le USSD passe même en zones rurales avec 2G.</li>
             <li><strong>Langues locales</strong>: menu disponible en wolof, pular, serere (SMS).</li>
-            <li><strong>Traçabilite</strong>: chaque code USSD tape est converti en donnee dans FresCoop — meme les ventes hors smartphone alimentent le score de bancabilite.</li>
-            <li><strong>Partenariat operateur</strong>: operateurs mobiles, fintechs et institutions membres de l ecosysteme paiement regional. Deploiement prevu via API USSD standard.</li>
+            <li><strong>Traçabilité</strong>: chaque code USSD tapé est converti en donnée dans FresCoop — même les ventes hors smartphone alimentent le score de bancabilité.</li>
+            <li><strong>Partenariat operateur</strong>: operateurs mobiles, fintechs et institutions membres de l ecosystème paiement regional. Deploiement prevu via API USSD standard.</li>
           </ul>
           <NoticeCard icon={ShieldCheck} title="Mode demo" body="Ceci est un simulateur fidele du flux USSD. En production, la passerelle operateur transmet les codes au backend FresCoop." />
         </section>
@@ -5964,6 +6325,61 @@ function DataPage({ actions, currentUser, notify, store }) {
           }}><Trash2 size={18} /> Vider</Button>
         </section>
       </div>
+    </PageFrame>
+  );
+}
+
+function SectorPage({ currentUser, kind, navigate, store }) {
+  const config = {
+    agriculture: {
+      icon: Tractor,
+      image: publicImages.agriculture,
+      title: 'Agriculture',
+      lead: 'Producteurs, coopératives, récoltes, dossiers terrain et attestations de qualification.',
+      actions: ['Publier les récoltes', 'Soumettre pièces agricoles', 'Obtenir attestation sur preuves'],
+    },
+    commerce: {
+      icon: Store,
+      image: publicImages.commerce,
+      title: 'Commerce',
+      lead: 'Commerçants, boutiques, acheteurs B2B, commandes et preuves de ventes.',
+      actions: ['Gerer catalogue', 'Recevoir commandes', 'Générer preuve économique'],
+    },
+    logistique: {
+      icon: Truck,
+      image: publicImages.logistics,
+      title: 'Logistique',
+      lead: 'Transporteurs, hubs, stockage, froid, capacité et suivi opérationnel.',
+      actions: ['Ajouter hub', 'Suivre capacités', 'Documenter operations'],
+    },
+  }[kind];
+  const Icon = config.icon;
+
+  return (
+    <PageFrame>
+      <section className="sector-layout">
+        <div className="sector-photo" style={{ backgroundImage: `linear-gradient(180deg, rgba(6,47,39,0.08), rgba(6,47,39,0.82)), url("${config.image}")` }}>
+          <Icon size={42} />
+          <strong>{config.title}</strong>
+          <span>{config.lead}</span>
+        </div>
+        <div className="panel">
+          <PanelTitle icon={Icon} title={`Espace ${config.title}`} />
+          <div className="sector-actions">
+            {config.actions.map((action) => <article key={action}><CheckCircle2 size={18} /><strong>{action}</strong></article>)}
+          </div>
+          <div className="status-grid small">
+            <StatCard icon={PackageCheck} label="Produits" value={store.products.filter((item) => sectorMatch(item, kind, store)).length} tone="green" />
+            <StatCard icon={FolderPlus} label="Dossiers" value={store.dossiers.filter((item) => sectorDossierMatch(item, kind, store)).length} tone="blue" />
+          </div>
+          <div className="button-row">
+            {currentUser.role !== 'client' && <Button onClick={() => navigate('/produits')}><PackageCheck size={18} /> Produits</Button>}
+            {currentUser.role !== 'client' && <Button variant="secondary" onClick={() => navigate('/dossiers')}><FolderPlus size={18} /> Dossiers</Button>}
+            {kind === 'commerce' && <Button variant="secondary" onClick={() => navigate('/marche')}><ShoppingCart size={18} /> Marche</Button>}
+            {kind === 'logistique' && <Button variant="secondary" onClick={() => navigate('/operations')}><Warehouse size={18} /> Operations</Button>}
+          </div>
+        </div>
+      </section>
     </PageFrame>
   );
 }
@@ -6311,7 +6727,7 @@ function MarketPriceNotice({ form }) {
   const control = getPriceControl({ name: form.name, category: form.category, price: form.price });
   if (!form.name && !form.category) return null;
   if (!control.reference) {
-    return <NoticeCard icon={CircleAlert} title="Prix marche non reference" body="Aucune reference locale trouvee pour ce produit. L admin pourra enrichir la grille marche." />;
+    return <NoticeCard icon={CircleAlert} title="Prix marche non reference" body="Aucune reference localé trouvee pour ce produit. L admin pourra enrichir la grille marche." />;
   }
   const tone = control.allowed ? 'Prix conforme' : 'Prix au-dessus du plafond';
   const body = `Reference: ${formatMoney(control.reference.price)}/${control.reference.unit}. Marge maximale autorisee: +${formatMoney(MARKET_PRICE_MAX_MARGIN)}. Plafond: ${formatMoney(control.maxAllowed)}/${control.reference.unit}.`;
@@ -6597,7 +7013,7 @@ function OrderVisibilityToolbar({
       </select>
       <Button variant="secondary" onClick={onToggleList}>{showList ? <ChevronUp size={16} /> : <ChevronDown size={16} />}{showList ? 'Réduire' : 'Développer'}</Button>
       <Button variant="secondary" onClick={onToggleHidden}>{showHidden ? <Eye size={16} /> : <EyeOff size={16} />}{showHidden ? 'Voir actives' : 'Voir masquees'}</Button>
-      <Button variant="secondary" disabled={!totalFiltered} onClick={onTogglePageSelection}><CheckCircle2 size={16} /> {allPageSelected ? 'Deselectionner' : 'Selectionner page'}</Button>
+      <Button variant="secondary" disabled={!totalFiltered} onClick={onTogglePageSelection}><CheckCircle2 size={16} /> {allPageSelected ? 'Desélectionnér' : 'Sélectionnér page'}</Button>
       {showHidden ? (
         <Button variant="secondary" disabled={!selectedCount} onClick={onRestoreSelected}><RefreshCcw size={16} /> Restaurer ({selectedCount})</Button>
       ) : (
@@ -6616,7 +7032,7 @@ function ClientOrderList({ onCancel, onPay, onSelect, orders, selectedIds, store
         const cancellable = order.status !== 'Annulee' && order.status !== 'Livree';
         return (
           <article id={`order-${order.id}`} key={order.id} className="compact-order-row">
-            <label className="order-row-check" title="Selectionner cette commande">
+            <label className="order-row-check" title="Sélectionnér cette commande">
               <input type="checkbox" checked={selectedIds.has(order.id)} onChange={() => onSelect(order.id)} />
             </label>
             <div className="order-row-main">
@@ -6651,7 +7067,7 @@ function DeliveryMissionList({ onSelect, onStatusChange, orders, selectedIds, st
         const client = store.users.find((item) => item.id === order.clientId);
         return (
           <article id={`order-${order.id}`} key={order.id} className="delivery-row">
-            <label className="order-row-check" title="Selectionner cette livraison">
+            <label className="order-row-check" title="Sélectionnér cette livraison">
               <input type="checkbox" checked={selectedIds.has(order.id)} onChange={() => onSelect(order.id)} />
             </label>
             <div className="delivery-main">
@@ -6688,7 +7104,7 @@ function OrderCardGrid({ currentUser, onAgentStep = () => {}, onCancel, onSelect
         const unit = order.unit || product?.unit || 'unite';
         return (
           <article id={`order-${order.id}`} className={`order-activity-row ${agentMode ? 'agent-order-card' : ''}`} key={order.id}>
-            <label className="order-card-check order-activity-check" title="Selectionner cette commande">
+            <label className="order-card-check order-activity-check" title="Sélectionnér cette commande">
               <input type="checkbox" checked={selectedIds.has(order.id)} onChange={() => onSelect(order.id)} />
             </label>
             <OrderProgress status={order.status} compact />
@@ -6720,9 +7136,9 @@ function OrderCardGrid({ currentUser, onAgentStep = () => {}, onCancel, onSelect
 function AgentWorkflowPanel({ onStep, order }) {
   const workflow = order.agentWorkflow || {};
   const steps = [
-    { key: 'farmerCalledAt', label: 'Agriculteur confirme', body: 'Valider disponibilite et demander preparation du stock.' },
-    { key: 'transporterContactedAt', label: 'Transporteur confirme', body: 'Confirmer capacite, heure de passage et conditions de livraison.' },
-    { key: 'deliveryOrganizedAt', label: 'Livraison planifiee', body: 'Le transport est cale et la commande peut etre executee.' },
+    { key: 'farmerCalledAt', label: 'Agriculteur confirme', body: 'Valider disponibilité et demander preparation du stock.' },
+    { key: 'transporterContactedAt', label: 'Transporteur confirme', body: 'Confirmer capacité, heure de passage et conditions de livraison.' },
+    { key: 'deliveryOrganizedAt', label: 'Livraison planifiée', body: 'Le transport est calé et la commande peut être exécutée.' },
   ];
 
   return (
@@ -6761,7 +7177,7 @@ function UserCompactRow({ onStatusChange, onDelete, onViewProofs, user, canDelet
         )}
       </div>
       <div>
-        <span>{user.phone || 'Telephone non renseigne'}</span>
+        <span>{user.phone || 'Téléphone non renseigne'}</span>
         <small>{formatDate(user.createdAt)}</small>
       </div>
       <div>
@@ -6846,7 +7262,7 @@ function FinanceScoreCard({ navigate, store, user }) {
   );
   const nextStep = score >= 75
     ? 'Votre profil est credible pour une preuve économique ou une attestation.'
-    : 'Ajoutez ventes, justificatifs et dossiers pour augmenter la credibilite.';
+    : 'Ajoutez ventes, justificatifs et dossiers pour augmenter la crédibilité.';
 
   return (
     <div className="finance-score-card">
@@ -6897,7 +7313,7 @@ function LanguageAssistant({ currentUser, store }) {
   const greetings = {
     fr: `Bonjour ${currentUser?.name?.split(' ')[0] || ''}, je suis FresCoop AI — votre assistant intelligent. Posez-moi une question sur les prix, la vente, la traçabilité ou le paiement.`,
     wo: `Salamaleekum ${currentUser?.name?.split(' ')[0] || ''}, maa ngi tudd FresCoop AI. Laaj ma ci njëg, jaay, suivi walla pay.`,
-    pul: `Mbaa kaa ${currentUser?.name?.split(' ')[0] || ''}, ko miin woni FresCoop AI. Naamno mi e coggu, njeeygu, tracabilite walla njoɓdi.`,
+    pul: `Mbaa kaa ${currentUser?.name?.split(' ')[0] || ''}, ko miin woni FresCoop AI. Naamno mi e coggu, njeeygu, traçabilité walla njoɓdi.`,
     sr: `Nafio ${currentUser?.name?.split(' ')[0] || ''}, mi tedd FresCoop AI. Penden mi ke kirim, felax, suivi ole pay.`,
   };
 
@@ -6932,7 +7348,7 @@ function LanguageAssistant({ currentUser, store }) {
       { q: 'Le mbaane haat ana ?', a: 'Da "Bancabilité": score ma (0-100). Yol ma e yo le bank ole SFD.' },
       { q: 'Le mbaane rot ale ñoox ?', a: '"Anti-gaspi" yol ŋ ŋoox le -15% haa -40%.' },
       { q: 'Le mbaane suivi ma lot ?', a: 'QR code. Da "Lots froids", scan QR.' },
-      { q: 'Ana ŋ telephone', a: 'Dial *384*FRES# ole telephone 2G.' },
+      { q: 'Ana ŋ téléphone', a: 'Dial *384*FRES# ole téléphone 2G.' },
     ],
   };
 
@@ -7091,7 +7507,7 @@ function AccessDenied({ navigate = () => {}, user = { role: 'client' } }) {
   return (
     <PageFrame>
       <section className="panel access-panel">
-        <EmptyState icon={LockKeyhole} title="Acces reserve" body="Votre role ne permet pas d ouvrir cette page. Utilisez le menu de votre espace pour acceder aux pages autorisees." />
+        <EmptyState icon={LockKeyhole} title="Acces reserve" body="Votre rôle ne permet pas d ouvrir cette page. Utilisez le menu de votre espace pour accéder aux pages autorisees." />
         <div className="button-row centered">
           <Button onClick={() => navigate(getRoleHomePath(user.role))}><Home size={18} /> Retour espace</Button>
           <Button variant="secondary" onClick={() => navigate('/compte')}><UserCheck size={18} /> Mon compte</Button>
@@ -7184,12 +7600,119 @@ function PendingApprovalPage({ user, logout, navigate, actions, notify, store })
   );
 }
 
+function PitchPage({ navigate, store }) {
+  const [slide, setSlide] = useState(0);
+  const impact = computeUemoaImpact(store);
+  const slides = [
+    {
+      title: 'Le problème',
+      body: 'Dans les filières agricoles UEMOA, 30 a 40% des récoltes perissables sont perdues faute de froid, de traçabilité et de preuve économique. Les producteurs restent invisibles pour les banques.',
+      metrics: [
+        { label: 'Pertes post-recolte', value: '30-40%' },
+        { label: 'Productrices sans compte bancaire', value: '78%' },
+        { label: 'Acces au credit formel', value: '<5%' },
+      ],
+    },
+    {
+      title: 'La solution FresCoop',
+      body: 'Une plateforme intégrée qui connecte lot froid, paiement partenaire (PayDunya) et preuve économique portable. Pas de wallet: le paiement reste chez Wave, OM, Free Money. FresCoop fabrique la preuve.',
+      metrics: [
+        { label: 'Lots traces', value: String(store.lots?.length || 0) },
+        { label: 'Hubs solaires', value: String(store.hubs?.length || 0) },
+        { label: 'Paiements partenaires', value: String(impact.paydunyaTxCount) },
+      ],
+    },
+    {
+      title: 'Modele économique',
+      body: 'Commission de 2% sur paiements partenaires. Abonnement premium pour acheteurs B2B (acces lots certifies). Licence SaaS pour SFD et banques qui veulent intégrér le scoring FresCoop.',
+      metrics: [
+        { label: 'Commission paiement', value: '2%' },
+        { label: 'Abo B2B', value: '15 000 FCFA/mois' },
+        { label: 'Licence SFD', value: 'Sur devis' },
+      ],
+    },
+    {
+      title: 'Impact mesurable',
+      body: 'Des indicateurs calcules en temps reel, pas des projections. Chaque KPI est derive des transactions reelles sur la plateforme: lots, paiements, capteurs, genre.',
+      metrics: [
+        { label: 'Pertes evitees', value: impact.lossesAvertedPercent + '%' },
+        { label: 'Revenu additionnel', value: formatCompact(impact.additionalFarmerRevenue) + ' FCFA' },
+        { label: 'CO2 evite', value: formatCompact(impact.co2SavedKg) + ' kg' },
+        { label: 'Femmes productrices', value: String(impact.womenProducers) },
+      ],
+    },
+    {
+      title: 'Équipe et next steps',
+      body: 'Équipe pluridisciplinaire (dev, agro, finance, terrain) basee a Dakar. Pilote prevu sur 3 coopératives maraîchères (Niayes, Thies, Casamance) des juin 2026.',
+      metrics: [
+        { label: 'Membres equipe', value: '7' },
+        { label: 'Cooperatives pilotes', value: '3' },
+        { label: 'Lancement pilote', value: 'Juin 2026' },
+      ],
+    },
+  ];
+
+  const current = slides[slide];
+  const prev = () => setSlide((s) => Math.max(0, s - 1));
+  const next = () => setSlide((s) => Math.min(slides.length - 1, s + 1));
+
+  return (
+    <PageFrame>
+      <section className="pitch-hero">
+        <img src="/gim-uemoa-logo.png" alt="GIM-UEMOA" className="gim-uemoa-logo-pitch" />
+        <span className="uemoa-badge">HACKATHON GIM-UEMOA 2026</span>
+        <h1>FresCoop — Pitch Deck</h1>
+        <p>Digitalisation de la chaine de valeur agricole UEMOA</p>
+      </section>
+
+      <nav className="pitch-nav">
+        {slides.map((s, i) => (
+          <button key={i} type="button" className={'pitch-dot' + (i === slide ? ' active' : '')} onClick={() => setSlide(i)}>
+            {i + 1}
+          </button>
+        ))}
+      </nav>
+
+      <section className="pitch-slide panel">
+        <h2>{current.title}</h2>
+        <p>{current.body}</p>
+        {current.metrics && (
+          <div className="pitch-metrics">
+            {current.metrics.map((m) => (
+              <div key={m.label} className="pitch-metric-card">
+                <strong>{m.value}</strong>
+                <span>{m.label}</span>
+              </div>
+            ))}
+          </div>
+        )}
+      </section>
+
+      <div className="pitch-controls">
+        <Button variant="secondary" onClick={prev} disabled={slide === 0}><ChevronLeft size={18} /> Precedent</Button>
+        <span>{slide + 1} / {slides.length}</span>
+        <Button onClick={next} disabled={slide === slides.length - 1}>Suivant <ChevronRight size={18} /></Button>
+      </div>
+
+      <section className="pitch-footer panel">
+        <h3>Liens rapides</h3>
+        <div className="pitch-quick-links">
+          <Button variant="secondary" onClick={() => navigate('/login')}>Lancer la demo</Button>
+          <Button variant="secondary" onClick={() => navigate('/impact')}>Voir impact</Button>
+          <Button variant="secondary" onClick={() => navigate('/lots')}>Explorer les lots</Button>
+          <Button variant="secondary" onClick={() => navigate('/bancabilite')}>Bancabilité</Button>
+        </div>
+      </section>
+    </PageFrame>
+  );
+}
+
 function AppFooter({ currentUser, navigate }) {
   const quickLinks = [
     { label: 'Accueil', path: getRoleHomePath(currentUser.role) },
     { label: 'Marche', path: '/marche' },
     { label: 'Commandes', path: '/commandes' },
-    { label: 'Bancabilite', path: '/bancabilite' },
+    { label: 'Bancabilité', path: '/bancabilite' },
     { label: 'Mon compte', path: '/compte' },
   ].filter((item) => canAccessPath(currentUser.role, item.path));
 
@@ -7432,7 +7955,7 @@ function getImageId(image, index = 0) {
 }
 
 function FileInput({ accept, file, label, multiple, onChange }) {
-  const text = Array.isArray(file) ? `${file.length} fichier(s)` : file?.name || 'Selectionner';
+  const text = Array.isArray(file) ? `${file.length} fichier(s)` : file?.name || 'Sélectionnér';
   return (
     <label className="file-input">
       <input accept={accept} multiple={multiple} type="file" onChange={(event) => onChange(multiple ? Array.from(event.target.files || []) : event.target.files?.[0] || null)} />
@@ -7545,7 +8068,7 @@ function useProductionStore() {
   });
   const loadedRemote = useRef(false);
   const lastSyncedSerialized = useRef('');
-  // Flag set à true dès qu'une mutation locale est en cours (entre le setState
+  // Flag set à true dès qu'une mutation localé est en cours (entre le setState
   // et la fin du PUT réseau). Pendant ce temps, le polling NE remplace PAS le
   // store local, pour éviter d'écraser la mutation (race condition).
   const pendingMutation = useRef(false);
@@ -7565,7 +8088,7 @@ function useProductionStore() {
     let cancelled = false;
 
     async function syncFromRemote() {
-      // Mutation locale en cours → on attend qu'elle se termine
+      // Mutation localé en cours → on attend qu'elle se termine
       if (pendingMutation.current) return;
       try {
         const response = await fetch(API_BASE + '/api/store');
@@ -7590,17 +8113,29 @@ function useProductionStore() {
     }
 
     syncFromRemote();
-    const id = setInterval(syncFromRemote, 4000);
+    const id = setInterval(syncFromRemote, 3000);
     const onVisibility = () => {
       if (document.visibilityState === 'visible') syncFromRemote();
     };
+    const onStorageChange = (event) => {
+      if (event.key === STORAGE_KEY && event.newValue && !pendingMutation.current) {
+        try {
+          const updated = JSON.parse(event.newValue);
+          const normalized = normalizeStore(updated);
+          lastSyncedSerialized.current = JSON.stringify(normalized);
+          setStoreRaw(normalized);
+        } catch {}
+      }
+    };
     document.addEventListener('visibilitychange', onVisibility);
     window.addEventListener('focus', syncFromRemote);
+    window.addEventListener('storage', onStorageChange);
     return () => {
       cancelled = true;
       clearInterval(id);
       document.removeEventListener('visibilitychange', onVisibility);
       window.removeEventListener('focus', syncFromRemote);
+      window.removeEventListener('storage', onStorageChange);
     };
   }, []);
 
@@ -7627,7 +8162,7 @@ function useProductionStore() {
     // ce changement vient du polling — on NE fait PAS de PUT.
     if (payload === lastSyncedSerialized.current) return;
 
-    // Mutation locale détectée → verrouiller le polling et PUT immédiat
+    // Mutation localé détectée → verrouiller le polling et PUT immédiat
     pendingMutation.current = true;
     const useForce = forceNextPut.current;
     forceNextPut.current = false;
@@ -7796,7 +8331,7 @@ function sanitizeNotificationText(value) {
     .replace(/Confirm\uFFFD+e/g, 'Confirm\u00e9e')
     .replace(/annul\uFFFD+e/g, 'annul\u00e9e')
     .replace(/pay\uFFFD+\(s\)/g, 'paye(s)')
-    .replace(/pr\uFFFD+parer/g, 'preparer');
+    .replace(/pr\uFFFD+parer/g, 'préparer');
 }
 
 function ensureSeedAdmin(users) {
@@ -8224,7 +8759,7 @@ function buildSellerOpportunities(store, user) {
       id: 'publish-drafts',
       icon: Store,
       title: 'Mettre les brouillons en vente',
-      body: 'Chaque produit publie augmente les chances de commande.',
+      body: 'Chaque produit publié augmente les chances de commande.',
       value: `${draftProducts.length} produit(s)`,
       path: '/produits',
     },
@@ -8256,7 +8791,7 @@ function buildSellerOpportunities(store, user) {
       id: 'transactions',
       icon: ReceiptText,
       title: 'Enregistrer les ventes réelles',
-      body: 'Les ventes saisies creent une preuve économique exploitable.',
+      body: 'Les ventes saisies créent une preuve économique exploitable.',
       value: 'Preuve',
       path: '/preuves',
     },
@@ -8303,9 +8838,9 @@ function buildSellerHealth(store) {
 function getSellerRecommendation({ user, products, orders, dossiers, messages }) {
   if (!products.length) return 'Ajouter au moins un produit vendable.';
   if (!products.some((item) => item.status === 'Publie')) return 'Publier les produits en brouillon.';
-  if (!user.phone || !user.region) return 'Completer telephone et region.';
+  if (!user.phone || !user.region) return 'Completer téléphone et region.';
   if (messages.some((item) => item.status === 'Nouveau')) return 'Repondre aux messages clients.';
-  if (!orders.length) return 'Partager le catalogue et stimuler les premieres commandes.';
+  if (!orders.length) return 'Partager le catalogue et stimuler les premières commandes.';
   if (!dossiers.some((item) => item.status === 'Valide')) return 'Valider un dossier pour renforcer la confiance.';
   return 'Profil solide: pousser preuves économiques et partenariats.';
 }
@@ -8405,7 +8940,7 @@ function removeRichUemoaDemo(store) {
 function hasRichDemo(store) {
   const demoPatterns = ['-demo-', 'coop-', 'buyer-', 'lot-', 'hub-'];
   const seedPatterns = /^(prd-\d|ord-\d|txn-\d|pay-\d|dos-\d|prf-\d|att-\d|lot-\d|hub-\d|usr-demo-\d)/;
-  return ['users', 'products', 'orders', 'lots', 'hubs', 'cooperatives', 'buyers'].some((k) =>
+  return ['users', 'products', 'orders', 'lots', 'hubs', 'coopératives', 'buyers'].some((k) =>
     (store[k] || []).some((item) => { const id = String(item?.id || ''); return demoPatterns.some((p) => id.includes(p)) || seedPatterns.test(id); }),
   );
 }
@@ -8782,7 +9317,7 @@ function buildFrescoopDemoData(store) {
     grade: lot.qualityGrade,
     defectsPercent: lot.lossRiskPercent > 20 ? 8 : 2,
     shelfLifeDays: lot.shelfLifeDays,
-    assessor: 'Operateur qualite FresCoop',
+    assessor: 'Operateur qualité FresCoop',
     recommendation: lot.routeRecommendation,
   }));
   const reservations = [
@@ -8802,7 +9337,7 @@ function buildFrescoopDemoData(store) {
   const partnerOffers = [
     { id: 'offer-avance-baobab', partnerId: 'partner-baobab', title: 'Avance intrants post-vente', eligibility: 'Consentement actif + 2 reservations confirmees', status: 'Disponible' },
   ];
-  const alerts = lots.filter((lot) => lot.lossRiskPercent >= 25).map((lot) => ({ id: `alert-${lot.id}`, createdAt: now, lotId: lot.id, severity: 'Haute', title: 'Lot a vendre rapidement', body: lot.routeReason }));
+  const alerts = lots.filter((lot) => lot.lossRiskPercent >= 25).map((lot) => ({ id: `alert-${lot.id}`, createdAt: now, lotId: lot.id, severity: 'Haute', title: 'Lot à vendre rapidement', body: lot.routeReason }));
   const auditLogs = [
     { id: 'aud-demo-001', createdAt: now, actorId: SEEDED_ADMIN_USER.id, actorName: 'Admin FresCoop', action: 'demo_seed', detail: 'Dataset jury FresCoop charge', targetId: 'demo' },
   ];
@@ -8818,7 +9353,7 @@ function createAuditLog(actor, action, detail, targetId) {
     id: uid('aud'),
     createdAt: new Date().toISOString(),
     actorId: actor?.id || '',
-    actorName: actor?.name || 'Systeme',
+    actorName: actor?.name || 'Système',
     action,
     detail,
     targetId,
@@ -8885,15 +9420,15 @@ function buildTransportAlerts(store, user) {
     const temperatureValue = Number(String(hub.temperature || '').replace(',', '.').replace(/[^\d.-]/g, ''));
 
     if (capacity && occupancy >= 85) {
-      alerts.push({ id: `${hub.id}-capacity`, title: `${hub.name}: capacite presque pleine`, body: `${occupancy}% occupe dans le hub de ${hub.region}.` });
+      alerts.push({ id: `${hub.id}-capacity`, title: `${hub.name}: capacité presque pleine`, body: `${occupancy}% occupe dans le hub de ${hub.region}.` });
     }
 
     if (battery && battery <= 25) {
-      alerts.push({ id: `${hub.id}-battery`, title: `${hub.name}: batterie faible`, body: `Batterie signalee a ${battery}%. Prioriser recharge ou relais.` });
+      alerts.push({ id: `${hub.id}-battery`, title: `${hub.name}: batterie faible`, body: `Batterie signalée a ${battery}%. Prioriser recharge ou relais.` });
     }
 
     if (temperatureText && Number.isFinite(temperatureValue) && temperatureValue > 8) {
-      alerts.push({ id: `${hub.id}-temperature`, title: `${hub.name}: froid a verifier`, body: `Temperature indiquee: ${hub.temperature}. Controle recommande avant livraison.` });
+      alerts.push({ id: `${hub.id}-temperature`, title: `${hub.name}: froid a vérifier`, body: `Temperature indiquée: ${hub.temperature}. Contrôle recommande avant livraison.` });
     }
 
     return alerts;
@@ -8978,7 +9513,7 @@ function getInactiveAccountMessage(status) {
     return 'Votre inscription est en attente de validation par un administrateur. Vous recevrez un acces des que votre compte sera approuve.';
   }
   if (normalized === 'rejete') {
-    return 'Votre demande d inscription a ete rejetee. Contactez un administrateur FresCoop pour plus d informations.';
+    return "Votre demande d'inscription a été rejetée. Contactez un administrateur FresCoop pour plus d'informations.";
   }
   if (normalized === 'suspendu' || normalized === 'inactif' || normalized === 'bloque') {
     return 'Votre compte a ete suspendu. Contactez un administrateur FresCoop.';
@@ -9148,7 +9683,7 @@ function navItemByPath(path) {
   const items = {
     '/': { path: '/', label: 'Accueil', icon: Home, description: 'Vue principale de votre espace' },
     '/verification': { path: '/verification', label: 'Vérification', icon: ShieldCheck, description: 'Preuves d activité agricole et score de confiance' },
-    '/marche': { path: '/marche', label: 'Marché', icon: ShoppingCart, description: 'Articles disponibles et commandes client' },
+    '/marche': { path: '/marche', label: 'Marché', icon: ShoppingCart, description: 'Articlés disponibles et commandes client' },
     '/produits': { path: '/produits', label: 'Produits', icon: PackageCheck, description: 'Catalogue et articles publiés' },
     '/lots': { path: '/lots', label: 'Lots froids', icon: ClipboardCheck, description: 'Jumeaux numériques, QR, capteurs et routage' },
     '/dossiers': { path: '/dossiers', label: 'Dossiers', icon: FolderPlus, description: 'Pièces et demandes documentaires' },
@@ -9419,7 +9954,7 @@ function renderAttestationHtml(attestation) {
     <section>
       <h2>Bénéficiaire</h2>
       <p><strong>${escapeHtml(dossier.personName)}</strong> - ${escapeHtml(roleLabel(dossier.personRole))}</p>
-      <p>ID: ${escapeHtml(dossier.personId)} | Telephone: ${escapeHtml(dossier.phone || 'Non renseigne')}</p>
+      <p>ID: ${escapeHtml(dossier.personId)} | Téléphone: ${escapeHtml(dossier.phone || 'Non renseigne')}</p>
       <p>Organisation: ${escapeHtml(dossier.organization || dossier.ownerName || 'Non renseignee')}</p>
     </section>
     <section>
@@ -9463,7 +9998,7 @@ function renderProofHtml(proof) {
 
 function getReceiptVerifyUrl(code) {
   const origin = typeof window !== 'undefined' && window.location ? window.location.origin : 'https://frescoop.sn';
-  return `${origin}/verifier?code=${encodeURIComponent(code || '')}`;
+  return `${origin}/vérifier?code=${encodeURIComponent(code || '')}`;
 }
 
 function getQrImageUrl(value, size = 220) {
@@ -9881,13 +10416,13 @@ function renderBusinessReportHtml(store) {
         <div class="kpi-card green"><span class="kpi-value">${formatCompact(impact.tracedKg)}</span><span class="kpi-label">Kg traces</span></div>
         <div class="kpi-card gold"><span class="kpi-value">${impact.paydunyaTxCount}</span><span class="kpi-label">Paiements PayDunya</span></div>
         <div class="kpi-card blue"><span class="kpi-value">${(store.lots || []).length}</span><span class="kpi-label">Lots actifs</span></div>
-        <div class="kpi-card coral"><span class="kpi-value">${store.proofs.length}</span><span class="kpi-label">Preuves economiques</span></div>
+        <div class="kpi-card coral"><span class="kpi-value">${store.proofs.length}</span><span class="kpi-label">Preuves économiques</span></div>
       </div>
     </section>
 
     <section>
       <h2>Proposition de valeur</h2>
-      <p>FresCoop digitalise la chaine de valeur agricole UEMOA : marketplace multicanale, stockage froid solaire, paiement via rails GIM-UEMOA et preuve economique portable pour l'acces au credit formel.</p>
+      <p>FresCoop digitalise la chaine de valeur agricole UEMOA : marketplace multicanale, stockage froid solaire, paiement via rails GIM-UEMOA et preuve économique portable pour l'acces au credit formel.</p>
     </section>
 
     <section>
@@ -9895,26 +10430,26 @@ function renderBusinessReportHtml(store) {
       <table class="finance-table">
         <tr><td>Valeur catalogue</td><td><strong>${escapeHtml(formatMoney(revenue.catalogValue))}</strong></td></tr>
         <tr><td>Valeur commandes</td><td><strong>${escapeHtml(formatMoney(revenue.orderValue))}</strong></td></tr>
-        <tr><td>Commandes ouvertes a convertir</td><td><strong>${escapeHtml(formatMoney(revenue.openOrderValue))}</strong></td></tr>
+        <tr><td>Commandes ouvertes à convertir</td><td><strong>${escapeHtml(formatMoney(revenue.openOrderValue))}</strong></td></tr>
         <tr><td>Vendeurs actifs</td><td><strong>${revenue.activeSellerCount}/${revenue.sellerCount}</strong></td></tr>
-        <tr><td>Transactions enregistrees</td><td><strong>${impact.transactionsCount}</strong></td></tr>
+        <tr><td>Transactions enregistrées</td><td><strong>${impact.transactionsCount}</strong></td></tr>
       </table>
     </section>
 
     <section>
-      <h2>Confiance et bancabilite</h2>
+      <h2>Confiance et bancabilité</h2>
       <table class="finance-table">
         <tr><td>Dossiers soumis</td><td><strong>${pipeline.total}</strong></td></tr>
         <tr><td>Dossiers validables</td><td><strong>${pipeline.validated}</strong></td></tr>
         <tr><td>En attente de validation</td><td><strong>${pipeline.pending}</strong></td></tr>
-        <tr><td>Preuves economiques emises</td><td><strong>${store.proofs.length}</strong></td></tr>
-        <tr><td>Attestations generees</td><td><strong>${store.attestations.length}</strong></td></tr>
+        <tr><td>Preuves économiques emises</td><td><strong>${store.proofs.length}</strong></td></tr>
+        <tr><td>Attestations générées</td><td><strong>${store.attestations.length}</strong></td></tr>
       </table>
     </section>
 
     <section>
       <h2>Produits moteurs</h2>
-      <table><thead><tr><th>Produit</th><th>Vendeur</th><th>Stock valorise</th><th>Commandes</th></tr></thead><tbody>${rows || '<tr><td colspan="4">Aucun produit enregistre</td></tr>'}</tbody></table>
+      <table><thead><tr><th>Produit</th><th>Vendeur</th><th>Stock valorisé</th><th>Commandes</th></tr></thead><tbody>${rows || '<tr><td colspan="4">Aucun produit enregistre</td></tr>'}</tbody></table>
     </section>
 
     <section>
@@ -9992,12 +10527,12 @@ function transactionsToRows(items) {
 }
 
 function usersToRows(users) {
-  return [['ID', 'Date', 'Nom', 'Email', 'Role', 'Statut', 'Telephone', 'Organisation', 'Region'], ...users.map((user) => [user.id, user.createdAt, user.name, user.email, user.role, user.status, user.phone, user.organization, user.region])];
+  return [['ID', 'Date', 'Nom', 'Email', 'Role', 'Statut', 'Téléphone', 'Organisation', 'Region'], ...users.map((user) => [user.id, user.createdAt, user.name, user.email, user.role, user.status, user.phone, user.organization, user.region])];
 }
 
 function surveyLeadsToRows(leads) {
   return [
-    ['ID', 'Date', 'Nom', 'Telephone', 'Email', 'Profil', 'Region', 'Organisation', 'Produits', 'Besoins', 'Smartphone', 'Pilote', 'Canal', 'Statut', 'Notes'],
+    ['ID', 'Date', 'Nom', 'Téléphone', 'Email', 'Profil', 'Region', 'Organisation', 'Produits', 'Besoins', 'Smartphone', 'Pilote', 'Canal', 'Statut', 'Notes'],
     ...leads.map((lead) => [
       lead.id,
       lead.createdAt,
